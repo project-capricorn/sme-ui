@@ -9,7 +9,14 @@ html {
   box-sizing: inherit;
 }
 
-body,
+body {
+  padding: 15px;
+}
+
+p {
+  font-size: 22px;
+}
+
 h1,
 h2,
 h3,
@@ -26,4 +33,17 @@ ul {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+}
+
+input[type=button] {
+  background-color: #4CAF50; /* Green */
+  border-radius: 5%;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  margin-bottom: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 26px;
 }

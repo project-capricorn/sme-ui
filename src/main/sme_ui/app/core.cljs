@@ -2,18 +2,21 @@
   (:require [reagent.dom :as rdom])
   (:require [reagent.core :as r]))
 
-(def expression (r/atom "This is a fish"))
-
-(defn foo [] 
-  [:input 
-   {:type "button" 
-    :value "[" 
-    :on-click #(reset! expression (str @expression "["))}])
-
-(defn bar [] [:p @expression])
+(defn keypad [] 
+  [:div 
+   [:h3 "Common sets"]
+   [:button {:title "Negative real numbers" :style {:margin "5px"}} "\u211D-"]
+   [:button {:title "Real numbers" :style {:margin "5px"}} \u211D]
+   [:button {:title "Positive real numbers" :style {:margin "5px"}} "\u211D+"]
+   [:h3 "Relational operators"]
+   [:button {:title "Less than" :style {:margin "5px"}} \<]
+   [:button {:title "Less than or equal to" :style {:margin "5px"}} \u2264]
+   [:button {:title "Equals" :style {:margin "5px"}} \=]
+   [:button {:title "Greater than or equal to" :style {:margin "5px"}} \u2265]
+   [:button {:title "Great than" :style {:margin "5px"}} \>]])
 
 (defn render []
-  (rdom/render [:div [foo] [bar]] (.getElementById js/document "root")))
+  (rdom/render [:div [keypad]] (.getElementById js/document "root")))
 
 (defn ^:export main []
   (render))

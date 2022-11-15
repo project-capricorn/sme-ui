@@ -1,0 +1,6 @@
+span.border-red {
+  border-style: dashed;
+  border-color: red;
+  padding-left: 4px;
+  padding-right: 4px;
+}

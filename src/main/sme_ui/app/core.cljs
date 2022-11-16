@@ -14,31 +14,37 @@
                              "Integers" \u2124
                              "Natural numbers" \u2115))
 
+(def operator-symbols (sorted-map "Less than" \<
+                                  "Less than or equal to" \u2265
+                                  "Equal to" \=
+                                  "Not equal to" \u2260
+                                  "Greater than or equal to" \u2265
+                                  "Greater than" \>))
+
 (defn buttons-from [mappings f] (reduce
-                      (fn [acc cur]
-                        (let [desc (key cur)
-                              sym (val cur)]
-                          (conj acc [:button.pad-keys {:title desc
-                                                       :on-click #(f sym)}
-                                     sym]))) [:div] mappings))
+                                 (fn [acc cur]
+                                   (let [desc (key cur) sym (val cur)]
+                                     (conj acc [:button.pad-keys {:title desc :on-click #(f sym)}
+                                                sym]))) [:div] mappings))
 
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
                        [:span.border-red @a-set] " | "
-                       [:span.border-red (apply str @predicate)] " }"]])
+                       [:span.border-red (apply str (reverse @predicate))] " }"]])
+
+(defn clear-predicate-placeholder [] (if (= (first @predicate)
+                                            (first predicate-placeholder))
+                                       (swap! predicate rest)))
 
 (defn keypad []
   [:div
    [:h3 "Common sets"]
    (buttons-from set-symbols (fn [val] (reset! a-set val)))
    [:h3 "Relational operators"]
-   [:button.pad-keys {:title "Less than" :on-click #(swap! predicate conj \<)} \<]
-   [:button.pad-keys {:title "Less than or equal to" :on-click #(swap! predicate conj \u2264)} \u2264]
-   [:button.pad-keys {:title "Equal to"} \=]
-   [:button.pad-keys {:title "Not equal to"} \u2260]
-   [:button.pad-keys {:title "Greater than or equal to"} \u2265]
-   [:button.pad-keys {:title "Great than"} \>]
-   [:h3 "Predicate Controls"]
+   (buttons-from operator-symbols (fn [val]
+                                    (clear-predicate-placeholder)
+                                    (swap! predicate conj val)))
+   [:h3 "Predicate controls"]
    [:button.pad-keys {:title "Reset the predicate"
                       :on-click #((reset! a-set set-placeholder)
                                   (reset! predicate predicate-placeholder))} "Reset"]

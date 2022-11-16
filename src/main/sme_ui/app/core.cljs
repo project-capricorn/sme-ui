@@ -14,11 +14,13 @@
                              "Integers" \u2124
                              "Natural numbers" \u2115))
 
-(defn set-buttons [] (reduce
-                      (fn [acc cur] (conj acc
-                                          [:button.pad-keys {:title (key cur)
-                                                             :on-click #(reset! a-set (val cur))}
-                                           (val cur)])) [] set-symbols))
+(defn buttons-from [mappings f] (reduce
+                      (fn [acc cur]
+                        (let [desc (key cur)
+                              sym (val cur)]
+                          (conj acc [:button.pad-keys {:title desc
+                                                       :on-click #(f sym)}
+                                     sym]))) [:div] mappings))
 
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
@@ -28,9 +30,7 @@
 (defn keypad []
   [:div
    [:h3 "Common sets"]
-   [:button.pad-keys {:title "Real numbers" :on-click #(reset! a-set \u211D)} \u211D]
-   [:button {:title "Integers"  :on-click #(reset! a-set \u2124)} \u2124]
-   [:button.pad-keys {:title "Natural numbers" :on-click #(reset! a-set \u2115)} \u2115]
+   (buttons-from set-symbols (fn [val] (reset! a-set val)))
    [:h3 "Relational operators"]
    [:button.pad-keys {:title "Less than" :on-click #(swap! predicate conj \<)} \<]
    [:button.pad-keys {:title "Less than or equal to" :on-click #(swap! predicate conj \u2264)} \u2264]

@@ -18,29 +18,26 @@
 (defn keypad []
   [:div
    [:h3 "Common sets"]
-   [:button {:title "Negative real numbers" :style {:margin "5px"} :on-click #(reset! a-set "\u211D-")} "\u211D-"]
-   [:button {:title "Real numbers" :style {:margin "5px"} :on-click #(reset! a-set "\u211D")} \u211D]
-   [:button {:title "Positive real numbers" :style {:margin "5px"} :on-click #(reset! a-set "\u211D+")} "\u211D+"]
-   [:button {:title "Negative integers" :style {:margin "5px"} :on-click #(reset! a-set "\u2124-")} "\u2124-"]
-   [:button {:title "Integers" :style {:margin "5px"} :on-click #(reset! a-set "\u2124")} \u2124]
-   [:button {:title "Positive integers" :style {:margin "5px"} :on-click #(reset! a-set "\u2124+")} "\u2124+"]
-   [:button {:title "Natural numbers" :style {:margin "5px"} :on-click #(reset! a-set "\u2115")} "\u2115"]
+   [:button.pad-keys {:title "Negative real numbers" :on-click #(reset! a-set "\u211D-")} "\u211D-"]
+   [:button.pad-keys {:title "Real numbers" :on-click #(reset! a-set "\u211D")} \u211D]
+   [:button.pad-keys {:title "Positive real numbers" :on-click #(reset! a-set "\u211D+")} "\u211D+"]
+   [:button.pad-keys {:title "Negative integers" :on-click #(reset! a-set "\u2124-")} "\u2124-"]
+   [:button {:title "Integers"  :on-click #(reset! a-set "\u2124")} \u2124]
+   [:button.pad-keys {:title "Positive integers" :on-click #(reset! a-set "\u2124+")} "\u2124+"]
+   [:button.pad-keys {:title "Natural numbers" :on-click #(reset! a-set "\u2115")} "\u2115"]
    [:h3 "Relational operators"]
-   [:button {:title "Less than" :style {:margin "5px"} 
-             :on-click #(swap! predicate conj \<)} \<]
-   [:button {:title "Less than or equal to" :style {:margin "5px"}
-             :on-click #(swap! predicate conj \u2264)} \u2264]
-   [:button {:title "Equal to" :style {:margin "5px"}} \=]
-   [:button {:title "Not equal to" :style {:margin "5px"}} \u2260]
-   [:button {:title "Greater than or equal to" :style {:margin "5px"}} \u2265]
-   [:button {:title "Great than" :style {:margin "5px"}} \>]
+   [:button.pad-keys {:title "Less than" :on-click #(swap! predicate conj \<)} \<]
+   [:button.pad-keys {:title "Less than or equal to" :on-click #(swap! predicate conj \u2264)} \u2264]
+   [:button.pad-keys {:title "Equal to" } \=]
+   [:button.pad-keys {:title "Not equal to" } \u2260]
+   [:button.pad-keys {:title "Greater than or equal to" } \u2265]
+   [:button.pad-keys {:title "Great than" } \>]
    [:h3 "Predicate Controls"]
-   [:button {:title "Reset the predicate" 
-             :style {:margin "5px"} 
+   [:button.pad-keys {:title "Reset the predicate"
              :on-click #(
                         (reset! a-set set-placeholder) 
                         (reset! predicate predicate-placeholder))} "Reset"]
-   [:button {:title "Delete last charater" :style {:margin "5px"}} "Backspace"]])
+   [:button.pad-keys {:title "Delete last charater"} "Backspace"]])
 
 (defn render []
   (rdom/render [:div [keypad] [set-builder]] (.getElementById js/document "root")))

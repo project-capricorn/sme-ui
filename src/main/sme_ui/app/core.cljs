@@ -13,20 +13,23 @@
 
 (defn buttons-from [mappings f] (reduce
                                  (fn [acc cur]
-                                   (let [desc (key cur) sym (val cur)]
+                                   (let [sym (key cur) desc (val cur)]
                                      (conj acc [:button.pad-keys {:title desc :on-click #(f sym)}
                                                 sym]))) [:div] mappings))
 
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
-                       [:span.border-red @a-set] " | "
-                       [:span.border-red (apply str (reverse @predicate))] " }"]])
+                       [:span.border-red 
+                        {:title "Set"} @a-set] " | "
+                       [:span.border-red
+                        {:title "Predicate"}
+                        (apply str (reverse @predicate))] " }"]])
 
 (defn clear-pred-place [] (if (= (first @predicate)
-                                            (first predicate-placeholder))
-                                       (swap! predicate rest)))
+                                 (first predicate-placeholder))
+                            (swap! predicate rest)))
 
-(defn append-to-pred [val] (clear-pred-place) (swap! predicate conj val))
+(defn append-to-pred [x] (clear-pred-place) (swap! predicate conj x))
 
 (defn keypad []
   [:div

@@ -1,25 +1,25 @@
 (ns sme-ui.app.sym)
 
-(def set-sym (sorted-map "Real numbers" \u211D
-                         "Integers" \u2124
-                         "Natural numbers" \u2115))
+(def set-sym (sorted-map \u2115 "Natural numbers"
+                         \u211D "Real numbers"
+                         \u2124 "Integers"))
 
-(def op-sym (sorted-map "Less than" \<
-                              "Less than or equal to" \u2265
-                              "Equal to" \=
-                              "Not equal to" \u2260
-                              "Greater than or equal to" \u2265
-                              "Greater than" \>))
+(def op-sym (sorted-map \u003C "Less than"
+                        \u003D "Equal to"
+                        \u003e "Greater than"
+                        \u2260 "Not equal to"
+                        \u2264 "Less than or equal to"
+                        \u2265 "Greater than or equal to"))
 
-(def num-sym (sorted-map "Zero" \0
-              "One" \1
-              "Two" \2
-              "Three" \3
-              "Four" \4
-              "Five" \5
-              "Six" \6
-              "Seven" \7
-              "Eight" \8
-              "Nine" \9))
+(def num-sym (sorted-map \u0030 "Zero"
+                         \u0031 "One"
+                         \u0032 "Two"
+                         \u0033 "Three"
+                         \u0034 "Four"
+                         \u0035 "Five"
+                         \u0036 "Six"
+                         \u0037 "Seven"
+                         \u0038 "Eight"
+                         \u0039 "Nine"))
 
-(def sub-sym {"x" \x})
+(def sub-sym {\x \x})

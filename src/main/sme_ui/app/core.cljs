@@ -1,4 +1,5 @@
 (ns sme-ui.app.core
+  (:require [clojure.string :as string])
   (:require [sme-ui.app.sym :as sym])
   (:require [reagent.dom :as rdom])
   (:require [reagent.core :as r]))
@@ -18,11 +19,15 @@
                                                 {:title desc :on-click #(f sym)}
                                                 sym]))) [:div] mappings))
 
+(defn validate-set-sym [] (if (some #(= @a-set %) (keys sym/set-sym))
+                            :span.border-green
+                            :span.border-red))
+
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
-                       [:span.border-red {:title "Set"} @a-set] " | "
+                       [(validate-set-sym) {:title "Set"} @a-set] " | "
                        [:span.border-red {:title "Predicate"}
-                        (apply str @predicate)] " }"]])
+                        (string/join " " @predicate)] " }"]])
 
 (defn clear-pred-place [] (when (= (first @predicate)
                                    (first predicate-placeholder))

@@ -28,10 +28,16 @@
                                    (first predicate-placeholder))
                             (reset! predicate [])))
 
-(defn append-to-pred [x]
-  (clear-pred-place)
-  (swap! predicate conj x)
-  (js/console.log @predicate))
+(defn append-to-pred [x] (clear-pred-place) (swap! predicate conj x) (js/console.log @predicate))
+
+(defn concat-num [x] (let [num (last @predicate)]
+                       (if (js/Number.isNaN (js/parseInt num))
+                         (append-to-pred x)
+                         (do
+                           (clear-pred-place)
+                           (swap! predicate pop)
+                           (swap! predicate conj (str num x))
+                           (js/console.log @predicate)))))
 
 (defn keypad []
   [:div
@@ -40,7 +46,7 @@
    [:h3 "Operators"]
    (buttons-from sym/op-sym append-to-pred)
    [:h3 "Numerals"]
-   (buttons-from sym/num-sym append-to-pred)
+   (buttons-from sym/num-sym concat-num)
    [:h3 "Subjects"]
    (buttons-from sym/sub-sym append-to-pred)
    [:h3 "Predicate controls"]

@@ -1,6 +1,8 @@
 (ns sme-ui.app.core
   (:require [clojure.string :as string])
   (:require [sme-ui.app.sym :as sym])
+  (:require [sme-ui.app.log :as log])
+  (:require [sme-ui.app.util :as util])
   (:require [reagent.dom :as rdom])
   (:require [reagent.core :as r]))
 
@@ -11,6 +13,8 @@
 (def a-set (r/atom set-placeholder))
 
 (def predicate (r/atom predicate-placeholder))
+
+(def log-pred (log/cons-log-atom predicate))
 
 (defn buttons-from [mappings f] (reduce
                                  (fn [acc cur]
@@ -23,26 +27,32 @@
                             :span.border-green
                             :span.border-red))
 
+(defn min-terms? [pred] (> (count pred) 3))
+
+(defn validate-pred [& fns] (;; TODO apply fns to pred
+                         :span.border-green
+                         :span.border-red))
+
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
                        [(validate-set-sym) {:title "Set"} @a-set] " | "
-                       [:span.border-red {:title "Predicate"}
+                       [(validate-pred min-terms?) {:title "Predicate"}
                         (string/join " " @predicate)] " }"]])
 
 (defn clear-pred-place [] (when (= (first @predicate)
                                    (first predicate-placeholder))
                             (reset! predicate [])))
 
-(defn append-to-pred [x] (clear-pred-place) (swap! predicate conj x) (js/console.log @predicate))
+(defn append-to-pred [x] (clear-pred-place) (swap! predicate conj x) (log-pred))
 
 (defn concat-num [x] (let [num (last @predicate)]
-                       (if (js/Number.isNaN (js/parseInt num))
+                       (if (util/numeric? x)
                          (append-to-pred x)
                          (do
                            (clear-pred-place)
                            (swap! predicate pop)
                            (swap! predicate conj (str num x))
-                           (js/console.log @predicate)))))
+                           (log-pred)))))
 
 (defn keypad []
   [:div

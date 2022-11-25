@@ -22,4 +22,10 @@
                          \u0038 "Eight"
                          \u0039 "Nine"))
 
-(def sub-sym {\x \x})
+(def sub-sym {\u0078 \u0078})
+
+(def op-to-func (zipmap (keys op-sym) [< = > not= <= >=]))
+
+(def nat-numbers (iterate inc 0))
+
+

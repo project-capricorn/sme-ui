@@ -6,7 +6,7 @@
 
 (def op-sym (sorted-map \u003C "Less than"
                         \u003D "Equal to"
-                        \u003e "Greater than"
+                        \u003E "Greater than"
                         \u2260 "Not equal to"
                         \u2264 "Less than or equal to"
                         \u2265 "Greater than or equal to"))

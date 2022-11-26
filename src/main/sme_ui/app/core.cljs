@@ -29,6 +29,27 @@
 
 (defn min-terms? [pred] (> (count pred) 2))
 
+(defn max-terms? [pred] (< (count pred) 6))
+
+(defn operator? [term] (some #(= % term) (keys sym/op-sym)))
+
+(defn count-ops [pred] (count
+                        (filter (fn [x] (operator? x))
+                                pred)))
+
+(defn infix? [pred] (and 
+                     (not (operator? (first pred)))
+                     (operator? (second pred))))
+
+
+(defn max-ops? [pred] (let [sym-count (count pred)
+                            op-count (count-ops pred)]
+                        (if (and
+                             (< sym-count 4)
+                             (< op-count 2))
+                          true
+                          false)))
+
 (defn validate-pred [& fns] (if (every? true? (map #(% @predicate) fns))
                               :span.border-green
                               :span.border-red))
@@ -36,7 +57,11 @@
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
                        [(validate-set-sym) {:title "Set"} @a-set] " | "
-                       [(validate-pred min-terms?) {:title "Predicate"}
+                       [(validate-pred
+                         infix?
+                         min-terms? 
+                         max-terms? 
+                         max-ops?) {:title "Predicate"}
                         (string/join " " @predicate)] " }"]])
 
 (defn clear-pred-place [] (when (= (first @predicate)
@@ -56,6 +81,8 @@
 
 (defn keypad []
   [:div
+   [:header
+    [:h1 "SME Set Builder Online"]]
    [:h3 "Sets"]
    (buttons-from sym/set-sym (fn [val] (reset! a-set val)))
    [:h3 "Operators"]
@@ -68,7 +95,8 @@
    [:button.pad-keys {:title "Reset the predicate"
                       :on-click #((reset! a-set set-placeholder)
                                   (reset! predicate predicate-placeholder))} "Reset"]
-   [:button.pad-keys {:title "Delete last charater"} "Backspace"]])
+   [:button.pad-keys {:title "Delete last charater"} "Backspace"]
+   [:button.pad-keys {:title "Evaluate expression"} "Eval"]])
 
 (defn render []
   (rdom/render [:div [keypad] [set-builder]] (.getElementById js/document "root")))

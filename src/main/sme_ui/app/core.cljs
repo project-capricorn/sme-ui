@@ -27,11 +27,11 @@
                             :span.border-green
                             :span.border-red))
 
-(defn min-terms? [pred] (> (count pred) 3))
+(defn min-terms? [pred] (> (count pred) 2))
 
-(defn validate-pred [& fns] (;; TODO apply fns to pred
-                         :span.border-green
-                         :span.border-red))
+(defn validate-pred [& fns] (if (every? true? (map #(% @predicate) fns))
+                              :span.border-green
+                              :span.border-red))
 
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
@@ -46,7 +46,7 @@
 (defn append-to-pred [x] (clear-pred-place) (swap! predicate conj x) (log-pred))
 
 (defn concat-num [x] (let [num (last @predicate)]
-                       (if (util/numeric? x)
+                       (if (util/non-numeric? num)
                          (append-to-pred x)
                          (do
                            (clear-pred-place)

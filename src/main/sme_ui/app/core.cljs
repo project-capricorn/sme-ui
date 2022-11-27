@@ -27,48 +27,51 @@
                             :span.border-green
                             :span.border-red))
 
-(defn min-terms? [pred] (> (count pred) 2))
-
-(defn max-terms? [pred] (< (count pred) 6))
-
 (defn operator? [term] (some #(= % term) (keys sym/op-sym)))
 
-(defn count-ops [pred] (count
-                        (filter (fn [x] (operator? x))
-                                pred)))
+(defn min-terms? [pred] (>= (count pred) 3))
 
-(defn infix? [pred] (and 
-                     (not (operator? (first pred)))
-                     (operator? (second pred))))
+(defn max-terms? [pred] (<= (count pred) 5))
 
+(defn count-ops [pred] (count (filter (fn [x] (operator? x)) pred)))
 
-(defn max-ops? [pred] (let [sym-count (count pred)
-                            op-count (count-ops pred)]
-                        (if (and
-                             (< sym-count 4)
-                             (< op-count 2))
-                          true
-                          false)))
+(defn decomp-exps [pred] (let [first-exp (take 3 pred)
+                               second-exp (drop 2 pred)]
+                           [first-exp second-exp]))
+
+(defn infix? [pred]  (and (not (operator? (first pred)))
+                          (operator? (second pred))))
+
+(defn infixed? [pred] (let [exps (decomp-exps pred)
+                            first-exp (first exps)
+                            second-exp (second exps)]
+                        (cond
+                          (and (= 3 (count pred)) (infix? first-exp)) true
+                          (and (= 5 (count pred)) (infix? second-exp)) true
+                          :else false)))
+
+(defn max-ops? [pred]  (let [sym-count (count pred) op-count (count-ops pred)]
+                         (cond (and (= sym-count 3) (= op-count 1)) true
+                               (and (= sym-count 5) (= op-count 2)) true
+                               :else false)))
 
 (defn validate-pred [& fns] (if (every? true? (map #(% @predicate) fns))
                               :span.border-green
                               :span.border-red))
 
+(def validators [min-terms? infixed? max-terms? max-ops?])
+
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
                        [(validate-set-sym) {:title "Set"} @a-set] " | "
-                       [(validate-pred
-                         infix?
-                         min-terms? 
-                         max-terms? 
-                         max-ops?) {:title "Predicate"}
+                       [(apply validate-pred validators) {:title "Predicate"}
                         (string/join " " @predicate)] " }"]])
 
 (defn clear-pred-place [] (when (= (first @predicate)
                                    (first predicate-placeholder))
                             (reset! predicate [])))
 
-(defn append-to-pred [x] (clear-pred-place) (swap! predicate conj x) (log-pred))
+(defn append-to-pred [x] (clear-pred-place) (swap! predicate conj x))
 
 (defn concat-num [x] (let [num (last @predicate)]
                        (if (util/non-numeric? num)
@@ -76,13 +79,12 @@
                          (do
                            (clear-pred-place)
                            (swap! predicate pop)
-                           (swap! predicate conj (str num x))
-                           (log-pred)))))
+                           (swap! predicate conj (str num x))))))
 
 (defn keypad []
   [:div
    [:header
-    [:h1 "SME Set Builder Online"]]
+    [:h1 "SME Online"]]
    [:h3 "Sets"]
    (buttons-from sym/set-sym (fn [val] (reset! a-set val)))
    [:h3 "Operators"]

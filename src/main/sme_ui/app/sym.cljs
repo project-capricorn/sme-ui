@@ -1,7 +1,6 @@
 (ns sme-ui.app.sym)
 
 (def set-sym (sorted-map \u2115 "Natural numbers"
-                         \u211D "Real numbers"
                          \u2124 "Integers"))
 
 (def op-sym (sorted-map \u003C "Less than"

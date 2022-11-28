@@ -24,20 +24,29 @@
                                                 {:title desc :on-click #(f sym)}
                                                 sym]))) [:div] mappings))
 
-(defn validate-pred [& fns] (if (every? true? (map #(% @predicate) fns))
-                              :span.border-green
-                              :span.border-red))
+(defn validate-pred [if-case else-case & fns] (if (every? true? (map #(% @predicate) fns)) 
+                                                if-case else-case))
+
+(def border-pred (partial validate-pred :span.border-green :span.border-red))
+
+(def disable-pred-eval (partial validate-pred false true))
+
+(defn validate-set-sym [if-case else-case] (if (some #(= @a-set %) (keys sym/set-sym))
+                            if-case
+                            else-case))
+
+(def border-set-sym (partial validate-set-sym :span.border-green :span.border-red))
+
+(def disable-set-eval (partial validate-set-sym false true))
 
 (def validators [parse/min-terms? parse/infixed? parse/max-terms? parse/max-ops?])
 
-(defn validate-set-sym [] (if (some #(= @a-set %) (keys sym/set-sym))
-                            :span.border-green
-                            :span.border-red))
+(defn disable-eval [] (or (disable-set-eval) (apply disable-pred-eval validators)))
 
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
-                       [(validate-set-sym) {:title "Set"} @a-set] " | "
-                       [(apply validate-pred validators) {:title "Predicate"}
+                       [(border-set-sym) {:title "Set"} @a-set] " | "
+                       [(apply border-pred validators) {:title "Predicate"}
                         (string/join " " @predicate)] " }"]])
 
 (defn clear-pred-place! [] (when (= (first @predicate)
@@ -73,7 +82,8 @@
                                   (reset! predicate predicate-placeholder))} "Reset"]
    [:button.pad-keys {:title "Delete last charater" 
                       :on-click #(swap! predicate pop)} "Backspace"]
-   [:button.pad-keys {:title "Evaluate expression"} "Eval"]])
+   [:button.pad-keys {:title "Evaluate expression" 
+                      :disabled (disable-eval)} "Eval"]])
 
 (defn render []
   (rdom/render [:div [keypad] [set-builder]] (.getElementById js/document "root")))

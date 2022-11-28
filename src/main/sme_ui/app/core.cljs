@@ -57,7 +57,10 @@
 
 
 (defn concat-num! [x] (let [num (last @predicate)]
-                       (if (util/non-numeric? num)
+                        (if 
+                            (and 
+                             (not= num \u002D) 
+                             (util/non-numeric? num))
                          (append-to-pred! x)
                          (do
                            (clear-pred-place!)
@@ -70,8 +73,10 @@
     [:h1 "SME Online"]]
    [:h3 "Sets"]
    (buttons-from sym/set-sym (fn [val] (reset! a-set val)))
-   [:h3 "Operators"]
-   (buttons-from sym/op-sym append-to-pred!)
+   [:h3 "Binary Operators"]
+   (buttons-from sym/bin-op-sym append-to-pred!)
+   [:h3 "Unary Operators"]
+   (buttons-from sym/un-op-sym append-to-pred!)
    [:h3 "Numerals"]
    (buttons-from sym/num-sym concat-num!)
    [:h3 "Subjects"]

@@ -1,9 +1,11 @@
 (ns sme-ui.app.sym)
 
-(def set-sym (sorted-map \u2115 "Natural numbers"
-                         \u2124 "Integers"))
+(def set-sym (sorted-map \u2115 "Natural numbers: {1, 2, 3, ...}"
+                         \u2124 "Integers: {..., -1, 0, 1, ...}"))
 
-(def op-sym (sorted-map \u003C "Less than"
+(def un-op-sym {\u002D "Negation"})
+
+(def bin-op-sym (sorted-map \u003C "Less than"
                         \u003D "Equal to"
                         \u003E "Greater than"
                         \u2260 "Not equal to"
@@ -23,7 +25,7 @@
 
 (def sub-sym {\u0078 \u0078})
 
-(def op-to-func (zipmap (keys op-sym) [< = > not= <= >=]))
+(def op-to-func (zipmap (keys bin-op-sym) [< = > not= <= >=]))
 
 (def nat-numbers (iterate inc 0))
 

@@ -1,7 +1,7 @@
 (ns sme-ui.app.parse
   (:require [sme-ui.app.sym :as sym]))
 
-(defn operator? [term] (some #(= % term) (keys sym/op-sym)))
+(defn operator? [term] (some #(= % term) (keys sym/bin-op-sym)))
 
 (defn min-terms? [pred] (>= (count pred) 3))
 

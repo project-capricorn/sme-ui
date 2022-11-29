@@ -21,7 +21,7 @@
 
 1. Add instructions for Emacs
 
-The following is directly attribute to: https://www.npmjs.com/package/create-reagent-app
+The following is directly attributed to: https://www.npmjs.com/package/create-reagent-app
 
 ```
 

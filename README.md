@@ -1,37 +1,26 @@
 <img src="https://raw.githubusercontent.com/cljs/logo/master/cljs.svg" height="120">
 
-# Create Reagent App
+# sme-ui
 
-A simple way to bootstrap a ClojureScript (CLJS) web-app using:
+## Overview
 
-- [Shadow-CLJS](http://shadow-cljs.org/) as the build tool / compiler
+A nascent ClojureScript / Reagent application for interactive discrete math. 
 
-- [Reagent](https://github.com/reagent-project/reagent) (CLJS wrapper around [React](https://reactjs.org/)) for building your user interface
+## Roadmap
 
----
+### Set Builder Notation
 
-## Getting Started
+- [x] Parse and highlight valid inequalities of 3 or 5 terms.
+- [x] Enable evaluation of expressions only when valid
+- [ ] Evaluate the expresion over a subset of the parent set (natural numbers or integers)
+- [ ] Add buttons to cycle through additional elements of the evaluated set
 
-Create your app in 5 easy steps:
+## Building and Running the Application
 
-### 1. Use npx (npm package runner)
+### 
 
-Note that [npx](https://medium.com/@maybekatz/introducing-npx-an-npm-package-runner-55f7d4bd282b) comes with npm 5.2+ and higher.
+TODO :: Add instructions for Emacs
 
-To create a project called `my-project`, run this command in your Terminal:
-
-```
-npx create-reagent-app my-project
-```
-
-This will create a folder (in your current working directory) called `my-project`, with the bootstrapped app as its contents.
-
-### 2. Change Directory into Project Folder
-
-Assuming you called your project `my-project`:
-
-```
-cd my-project
 ```
 
 ### 3. Install Dependencies

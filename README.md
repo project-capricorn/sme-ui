@@ -17,9 +17,11 @@
 
 ## Building and Running the Application
 
-### 
+###  TODO
 
-TODO :: Add instructions for Emacs
+1. Add instructions for Emacs
+
+The following is directly attribute to: https://www.npmjs.com/package/create-reagent-app
 
 ```
 
@@ -202,8 +204,3 @@ Note that after this operation you will need to run `npm install` again before s
 Shadow-CLJS can be fairly slow to start. To improve this Shadow-CLJS can run in “server mode” which means that a dedicated process is started which all other commands can use to execute a lot faster since they won’t have to start a new JVM/Clojure instance.
 
 You can run the process in the foreground in a dedicated Terminal. Use CTRL+C to terminate the server.
-
-```
-npm run shadow-cljs-server
-```
-

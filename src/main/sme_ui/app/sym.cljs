@@ -1,6 +1,7 @@
 (ns sme-ui.app.sym)
 
-(def set-sym (sorted-map \u2115 "Natural numbers: {1, 2, 3, ...}"
+(def set-sym (sorted-map 
+                         \u2115 "Natural numbers: {0, 1, 2, 3, ...}"
                          \u2124 "Integers: {..., -1, 0, 1, ...}"))
 
 (def un-op-sym {\u002D "Negation"})
@@ -28,5 +29,3 @@
 (def op-to-func (zipmap (keys bin-op-sym) [< = > not= <= >=]))
 
 (def nat-numbers (iterate inc 0))
-
-

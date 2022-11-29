@@ -11,9 +11,13 @@
 
 (def set-placeholder "Set")
 
+(def eval-placeholder [:h3, "n", [:sub "1"], " ", "n", [:sub "2"], " ", "n" [:sub "3"], " ", "..."])
+
 (def a-set (r/atom set-placeholder))
 
 (def predicate (r/atom predicate-placeholder))
+
+(def eval-exp (r/atom eval-placeholder))
 
 (def log-pred (log/cons-log-atom predicate))
 
@@ -50,6 +54,8 @@
                                                        (clear-pred-place!)
                                                        (swap! predicate pop)
                                                        (swap! predicate conj (str num x))))))
+
+(defn eval-expression [] [:div [:h3 @eval-exp]])
 
 (defn header [] [:div [:header[:h1 "SME Online"]]])
 
@@ -101,7 +107,7 @@ For instance, it is meaningful to apply the predicate "
                         (string/join " " @predicate)] " }"]])
 
 (defn render []
-  (rdom/render [:div [header] [notes] [keypad] [set-builder]] (.getElementById js/document "root")))
+  (rdom/render [:div [header] [notes] [keypad] [set-builder] [eval-expression]] (.getElementById js/document "root")))
 
 (defn ^:export main []
   (render))

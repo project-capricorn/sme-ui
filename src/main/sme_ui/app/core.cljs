@@ -39,7 +39,6 @@
 
 (defn disable-eval [] (or (disable-set-eval) (apply disable-pred-eval validators)))
 
-
 (defn clear-pred-place! [] (when (= (first @predicate) (first predicate-placeholder))
                              (reset! predicate [])))
 
@@ -54,12 +53,25 @@
 
 (defn header [] [:div [:header[:h1 "SME Online"]]])
 
-(defn notes [] [:div [:p "The SME Set Builder currently allows you to build sets by applying syntactically meaningful predicates to integers."]
-                [:p "The set builder notation {x \u2208 S | P(x)} is read formally as 'The set of all elements x in S such that P(x) is true' 
-where \u2208 denotes 'is an element of', S represents a set, x an element of that set, and P(x) is a function that evaluates to true or false (a predicate). Finally, | means 'such that', indicating the predicate should evaluate to true given x."]
-                [:p "A syntactically meaningful predicate is one that can be evaluated (computed), although it may be obviously true or false. 
-For instance, it is meaningful to apply the predicate 6 < 3 to the set of natural numbers insofar as the predicate is always false.
-It is not meaningful to apply 6 < because the expression is incomplete."]])
+(defn notes [] [:div 
+                [:p "The SME Set Builder allows you to build sets by applying "
+                 [:em "valid"] " predicates to integers."]
+                [:p "The set builder notation " 
+                 [:strong "{ x \u2208 S | P(x) } "] "is read formally as " 
+                 [:em "The set of all elements x in S such that P(x) is true"]", where " 
+                 [:strong \u2208] " denotes " 
+                 [:em "is an element of, "]  
+                 [:strong "S"] " represents a set, " 
+                 [:strong "x"] " an element of that set, and " 
+                 [:strong " P(x)"] " is a function that evaluates to true or false (a predicate). Finally, " 
+                 [:strong "|"] "  means " 
+                 [:em "such that "], "indicating the predicate should evaluate to true given x."]
+                [:p "A valid predicate is one that can be evaluated (computed), although it may be obviously true or false. 
+For instance, it is meaningful to apply the predicate " 
+                 [:strong " 6 < 3 "] " to the set of natural numbers insofar as the predicate is always false. It is not meaningful to apply " 
+                 [:strong "6 < "] " because the expression is incomplete."]
+                [:p "Both the chosen set and the predicate will display a green border when valid. If the entire expression is valid the " 
+                 [:em "Eval "] "button will be enabled to compute the set."]])
 
 (defn keypad []
   [:div

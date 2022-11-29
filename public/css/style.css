@@ -4,6 +4,10 @@ body {
   color: white;
 }
 
+p {
+  font-size: 17px;    
+}
+
 span.border-red {
   border-style: dashed;
   border-color: red;

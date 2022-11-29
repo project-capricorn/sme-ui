@@ -107,7 +107,7 @@ For instance, it is meaningful to apply the predicate "
                         (string/join " " @predicate)] " }"]])
 
 (defn render []
-  (rdom/render [:div [header] [notes] [keypad] [set-builder] [eval-expression]] (.getElementById js/document "root")))
+  (rdom/render [:div [header] [notes] [keypad] [set-builder]] (.getElementById js/document "root")))
 
 (defn ^:export main []
   (render))

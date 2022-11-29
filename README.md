@@ -14,6 +14,7 @@
 - [x] Enable evaluation of expressions only when valid
 - [ ] Evaluate the expresion over a subset of the parent set (natural numbers or integers)
 - [ ] Add buttons to cycle through additional elements of the evaluated set
+- [ ] Allow for arbitrarily complex expressions in the predicate (add additional operators)
 
 ## Building and Running the Application
 

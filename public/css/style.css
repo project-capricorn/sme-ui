@@ -15,22 +15,24 @@ p {
 }
 
 span.border-red {
-  border-style: dashed;
-  border-color: red;
-  padding-left: 5px;
-  padding-right: 5px;
+  background-color: red;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   border-radius: 10px;
 }
 
 span.border-green {
-  border-style: dashed;
-  border-color: #66FF01;
-  padding-left: 5px;
-  padding-right: 5px;
+  background-color: green;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   border-radius: 10px;
 }
 
 button.pad-keys {
   margin: 5px;
-  font-size:16px;
+  font-size:17px;
 }

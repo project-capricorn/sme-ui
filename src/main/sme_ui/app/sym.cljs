@@ -1,4 +1,5 @@
-(ns sme-ui.app.sym)
+(ns sme-ui.app.sym
+  (:require [sme-ui.app.util :as util]))
 
 (def set-sym (sorted-map 
                          \u2115 "Natural numbers: {0, 1, 2, 3, ...}"
@@ -29,3 +30,12 @@
 (def op-to-func (zipmap (keys bin-op-sym) [< = > not= <= >=]))
 
 (def nat-numbers (iterate inc 0))
+
+(defn function-from [sym-list]
+  (let [fir (first sym-list)
+        sec (get op-to-func (second sym-list))
+        thi (util/third sym-list)]
+    (print fir sec thi)
+    (if (util/numeric? fir)
+      #(sec (js/parseInt fir) %)
+      #(sec % (js/parseInt thi)))))

@@ -55,7 +55,7 @@
                                                        (swap! predicate pop)
                                                        (swap! predicate conj (str num x))))))
 
-(defn eval-expression [] [:div [:h3 @eval-exp]])
+(defn eval-expression [] )
 
 (defn header [] [:div [:header[:h1 "SME Online"]]])
 

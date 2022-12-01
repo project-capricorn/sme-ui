@@ -4,28 +4,37 @@
   (:require [sme-ui.app.log :as log])
   (:require [sme-ui.app.util :as util])
   (:require [sme-ui.app.parse :as parse])
+  (:require [sme-ui.app.component :as component])
   (:require [reagent.dom :as rdom])
   (:require [reagent.core :as r]))
 
-(def predicate-placeholder ["P(x)"])
+(def predicate-placeholder
+  "The default expression shown for the predicate on app startup and reset"
+  ["P(x)"])
 
-(def set-placeholder "Set")
+(def set-placeholder
+  "The default string shown for the set on app startup and reset"
+  "Set")
 
-(def eval-placeholder [:h3, "n", [:sub "1"], " ", "n", [:sub "2"], " ", "n" [:sub "3"], " ", "..."])
+(def eval-placeholder
+  "The default series shown for the evaluated expression on app startup and reset"
+  (component/series :h3 "n" 6))
 
-(def a-set (r/atom set-placeholder))
+(def a-set
+  "A reference to a character representing the set to which the predicate is applied"
+  (r/atom set-placeholder))
 
-(def predicate (r/atom predicate-placeholder))
+(def predicate
+  "A reference to a vector representing the predicate. Composed of infixed operations"
+  (r/atom predicate-placeholder))
 
-(def eval-exp (r/atom eval-placeholder))
+(def eval-pred
+  "A reference to the evaluated predicate"
+  (r/atom eval-placeholder))
 
-(def log-pred (log/cons-log-atom predicate))
-
-(defn buttons-from [mappings f] (reduce (fn [acc cur]
-                                          (let [sym (key cur) desc (val cur)]
-                                            (conj acc [:button.pad-keys
-                                                       {:title desc :on-click #(f sym)}
-                                                       sym]))) [:div] mappings))
+(def log-pred
+  "Logs the predicate to the console"
+  (log/cons-log-atom predicate))
 
 (defn validate-pred [if-case else-case & fns] (if (every? true? (map #(% @predicate) fns)) if-case else-case))
 
@@ -55,42 +64,42 @@
                                                        (swap! predicate pop)
                                                        (swap! predicate conj (str num x))))))
 
-(defn eval-expression [] )
+(defn eval-expression [])
 
-(defn header [] [:div [:header[:h1 "SME Online"]]])
+(defn header [] [:div [:header [:h1 "SME Online"]]])
 
-(defn notes [] [:div 
+(defn notes [] [:div
                 [:p "The SME Set Builder allows you to build sets by applying "
                  [:em "valid"] " predicates to integers."]
-                [:p "The set builder notation " 
-                 [:strong "{ x \u2208 S | P(x) } "] "is read formally as " 
-                 [:em "The set of all elements x in S such that P(x) is true"]", where " 
-                 [:strong \u2208] " denotes " 
-                 [:em "is an element of, "]  
-                 [:strong "S"] " represents a set, " 
-                 [:strong "x"] " an element of that set, and " 
-                 [:strong " P(x)"] " is a function that evaluates to true or false (a predicate). Finally, " 
-                 [:strong "|"] "  means " 
+                [:p "The set builder notation "
+                 [:strong "{ x \u2208 S | P(x) } "] "is read formally as "
+                 [:em "The set of all elements x in S such that P(x) is true"] ", where "
+                 [:strong \u2208] " denotes "
+                 [:em "is an element of, "]
+                 [:strong "S"] " represents a set, "
+                 [:strong "x"] " an element of that set, and "
+                 [:strong " P(x)"] " is a function that evaluates to true or false (a predicate). Finally, "
+                 [:strong "|"] "  means "
                  [:em "such that "], "indicating the predicate should evaluate to true given x."]
                 [:p "A valid predicate is one that can be evaluated (computed), although it may be obviously true or false. 
-For instance, it is meaningful to apply the predicate " 
-                 [:strong " 6 < 3 "] " to the set of natural numbers insofar as the predicate is always false. It is not meaningful to apply " 
+For instance, it is meaningful to apply the predicate "
+                 [:strong " 6 < 3 "] " to the set of natural numbers insofar as the predicate is always false. It is not meaningful to apply "
                  [:strong "6 < "] " because the expression is incomplete."]
-                [:p "Both the chosen set and the predicate will display a green border when valid. If the entire expression is valid the " 
+                [:p "Both the chosen set and the predicate will display a green border when valid. If the entire expression is valid the "
                  [:em "Eval "] "button will be enabled to compute the set."]])
 
 (defn keypad []
   [:div
    [:h3 "Sets"]
-   (buttons-from sym/set-sym (fn [val] (reset! a-set val)))
+   (component/buttons-from sym/set-sym (fn [val] (reset! a-set val)))
    [:h3 "Binary Operators"]
-   (buttons-from sym/bin-op-sym append-to-pred!)
+   (component/buttons-from sym/bin-op-sym append-to-pred!)
    [:h3 "Unary Operators"]
-   (buttons-from sym/un-op-sym append-to-pred!)
+   (component/buttons-from sym/un-op-sym append-to-pred!)
    [:h3 "Numerals"]
-   (buttons-from sym/num-sym concat-num!)
+   (component/buttons-from sym/num-sym concat-num!)
    [:h3 "Subjects"]
-   (buttons-from sym/sub-sym append-to-pred!)
+   (component/buttons-from sym/sub-sym append-to-pred!)
    [:h3 "Predicate controls"]
    [:button.pad-keys {:title "Reset the predicate"
                       :on-click #((reset! a-set set-placeholder)
@@ -107,7 +116,7 @@ For instance, it is meaningful to apply the predicate "
                         (string/join " " @predicate)] " }"]])
 
 (defn render []
-  (rdom/render [:div [header] [notes] [keypad] [set-builder]] (.getElementById js/document "root")))
+  (rdom/render [:div [header] [notes] [keypad] [set-builder] [:div @eval-pred]] (.getElementById js/document "root")))
 
 (defn ^:export main []
   (render))

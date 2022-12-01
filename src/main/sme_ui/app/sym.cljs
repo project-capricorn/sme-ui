@@ -1,41 +1,61 @@
-(ns sme-ui.app.sym
+(ns ^{:author "Andrew Brown"
+      :doc "Provides mappings between Unicode symbols, their names, and the functions 
+they correspond to if applicable. Generally symbols are given as part of a sorted map,
+in order of increasing value."}
+ sme-ui.app.sym
   (:require [sme-ui.app.util :as util]))
 
-(def set-sym (sorted-map 
-                         \u2115 "Natural numbers: {0, 1, 2, 3, ...}"
-                         \u2124 "Integers: {..., -1, 0, 1, ...}"))
+(def set-sym
+  "Unicode symbols associated with number sets.
+  In this case zero has been included in the set of natural numbers."
+  (sorted-map
+   \u2115 "Natural numbers: {0, 1, 2, 3, ...}"
+   \u2124 "Integers: {..., -1, 0, 1, ...}"))
 
-(def un-op-sym {\u002D "Negation"})
+(def un-op-sym
+  "Unicode symbols associated with unary operators."
+  {\u002D "Negation"})
 
-(def bin-op-sym (sorted-map \u003C "Less than"
-                        \u003D "Equal to"
-                        \u003E "Greater than"
-                        \u2260 "Not equal to"
-                        \u2264 "Less than or equal to"
-                        \u2265 "Greater than or equal to"))
+(def bin-op-sym
+  "Unicode symbols associated with binary operators."
+  (sorted-map \u003C "Less than"
+              \u003D "Equal to"
+              \u003E "Greater than"
+              \u2260 "Not equal to"
+              \u2264 "Less than or equal to"
+              \u2265 "Greater than or equal to"))
 
-(def num-sym (sorted-map \u0030 "Zero"
-                         \u0031 "One"
-                         \u0032 "Two"
-                         \u0033 "Three"
-                         \u0034 "Four"
-                         \u0035 "Five"
-                         \u0036 "Six"
-                         \u0037 "Seven"
-                         \u0038 "Eight"
-                         \u0039 "Nine"))
+(def num-sym
+  "Unicode symbols associated with numerals."
+  (sorted-map \u0030 "Zero"
+              \u0031 "One"
+              \u0032 "Two"
+              \u0033 "Three"
+              \u0034 "Four"
+              \u0035 "Five"
+              \u0036 "Six"
+              \u0037 "Seven"
+              \u0038 "Eight"
+              \u0039 "Nine"))
 
-(def sub-sym {\u0078 \u0078})
+(def sub-sym
+  "Unicode symbols associated with symbols used as variables."
+  {\u0078 \u0078})
 
-(def op-to-func (zipmap (keys bin-op-sym) [< = > not= <= >=]))
+(def op-to-func
+  "Maps Unicode symbols to Clojure functions."
+  (zipmap (keys bin-op-sym) [< = > not= <= >=]))
 
-(def nat-numbers (iterate inc 0))
+(def nat-numbers
+  "A lazy seq representing the natural numbers including 0."
+  (iterate inc 0))
 
 (defn function-from [sym-list]
+  "Returns a function built from a list of symbols representing 
+an infixed binary operation."
   (let [fir (first sym-list)
         sec (get op-to-func (second sym-list))
         thi (util/third sym-list)]
-    (print fir sec thi)
     (if (util/numeric? fir)
       #(sec (js/parseInt fir) %)
       #(sec % (js/parseInt thi)))))

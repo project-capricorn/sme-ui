@@ -36,40 +36,73 @@
   "Logs the predicate to the console"
   (log/cons-log-atom predicate))
 
-(defn validate-pred [if-case else-case & fns] (if (every? true? (map #(% @predicate) fns)) if-case else-case))
+(defn valid-pred?
+  "Takes a collection of functions and applies each function to the predicate. Returns true
+if all functions evaluate to true"
+  [fns] (every? true? (map #(% @predicate) fns)))
 
-(def border-pred (partial validate-pred :span.border-green :span.border-red))
+(defn apply-to-pred
+  "Returns if-case if predicate is valid otherwise else-case"
+  [if-case else-case & fns] (if (valid-pred? fns) if-case else-case))
 
-(def disable-pred-eval (partial validate-pred false true))
+(def border-pred
+  "Styles the predicate given its validity"
+  (partial apply-to-pred :span.border-green :span.border-red))
 
-(defn validate-set-sym [if-case else-case] (if (some #(= @a-set %) (keys sym/set-sym)) if-case  else-case))
+(def disable-pred-eval
+  "Disables predicate evaluation given its validity"
+  (partial apply-to-pred false true))
 
-(def border-set-sym (partial validate-set-sym :span.border-green :span.border-red))
+(defn valid-set?
+  "Returns true if a set has been selected from the list of set symbols"
+  [] (some #(= @a-set %) (keys sym/set-sym)))
 
-(def disable-set-eval (partial validate-set-sym false true))
+(defn apply-to-set
+  "Returns if-case if set is valid otherwise else-case"
+  [if-case else-case] (if (valid-set?) if-case  else-case))
 
-(def validators [parse/min-terms? parse/infixed? parse/max-terms? parse/max-ops?])
+(def border-set-sym
+  "Styles the set given its validity"
+  (partial apply-to-set :span.border-green :span.border-red))
 
-(defn disable-eval [] (or (disable-set-eval) (apply disable-pred-eval validators)))
+(def disable-set-eval
+  "Disables set evaluation given its validity"
+  (partial apply-to-set false true))
 
-(defn clear-pred-place! [] (when (= (first @predicate) (first predicate-placeholder))
-                             (reset! predicate [])))
+(def validators
+  "A collection of functions used to validate the predicate"
+  [parse/min-terms? parse/infixed? parse/max-terms? parse/max-ops?])
 
-(defn append-to-pred! [x] (clear-pred-place!) (swap! predicate conj x))
+(defn disable-eval
+  "Returns true if either the chosen set or predicate are not valid"
+  [] (or (disable-set-eval) (apply disable-pred-eval validators)))
 
-(defn concat-num! [x] (let [num (last @predicate)] (if (and (not= num \u002D) (util/non-numeric? num))
-                                                     (append-to-pred! x)
-                                                     (do
-                                                       (clear-pred-place!)
-                                                       (swap! predicate pop)
-                                                       (swap! predicate conj (str num x))))))
+(defn clear-pred-place!
+  "Removes the default element from the predicate collection"
+  [] (when (= (first @predicate) (first predicate-placeholder)) (reset! predicate [])))
+
+(defn append-to-pred!
+  "Adds a user selected symbol to the predicate collection"
+  [x] (clear-pred-place!) (swap! predicate conj x))
+
+(defn concat-num!
+  "If the last position of the predicate is numeric that position is popped and replaced
+with the currently selected numeral bound to the previous one. Otherwise it is assumed
+the current numeral is beginning a new number and that numeral is conj'd with the vector."
+  [x] (let [num (last @predicate)]
+        (if (and (not= num \u002D) (util/non-numeric? num))
+          (append-to-pred! x)
+          (do
+            (clear-pred-place!)
+            (swap! predicate pop)
+            (swap! predicate conj (str num x))))))
 
 (defn eval-expression [])
 
-(defn header [] [:div [:header [:h1 "SME Online"]]])
+(defn header [] [:div.jumbotron [:header [:h1 "SME Online"]]])
 
-(defn notes [] [:div
-                [:p "The SME Set Builder allows you to build sets by applying "
+(defn notes [] [:div.col-sm-6
+                [:p "The Set Builder allows you to build sets by applying "
                  [:em "valid"] " predicates to integers."]
                 [:p "The set builder notation "
                  [:strong "{ x \u2208 S | P(x) } "] "is read formally as "
@@ -81,10 +114,8 @@
                  [:strong " P(x)"] " is a function that evaluates to true or false (a predicate). Finally, "
                  [:strong "|"] "  means "
                  [:em "such that "], "indicating the predicate should evaluate to true given x."]
-                [:p "A valid predicate is one that can be evaluated (computed), although it may be obviously true or false. 
-For instance, it is meaningful to apply the predicate "
-                 [:strong " 6 < 3 "] " to the set of natural numbers insofar as the predicate is always false. It is not meaningful to apply "
-                 [:strong "6 < "] " because the expression is incomplete."]
+                [:p "A valid predicate is one that can be evaluated (computed), although it may be obviously true or false."]
+
                 [:p "Both the chosen set and the predicate will display a green border when valid. If the entire expression is valid the "
                  [:em "Eval "] "button will be enabled to compute the set."]])
 
@@ -116,7 +147,14 @@ For instance, it is meaningful to apply the predicate "
                         (string/join " " @predicate)] " }"]])
 
 (defn render []
-  (rdom/render [:div [header] [notes] [keypad] [set-builder] [:div @eval-pred]] (.getElementById js/document "root")))
+  (rdom/render [:div
+                [header]
+                [notes]
+                [:div.col-sm-6
+                 [keypad]
+                 [set-builder]
+                 [:h3 @eval-pred]]]
+               (.getElementById js/document "root")))
 
 (defn ^:export main []
   (render))

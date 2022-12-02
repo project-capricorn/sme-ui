@@ -1,13 +1,5 @@
-body {
-  font-size: 100%;
-  background: #333;
-  color: white;
+header {
   text-align: center;
-  padding-top: 5%;
-  padding-bottom: 5%;
-  padding-left: 5%;
-  padding-right: 5%;
-
 }
 
 p {
@@ -16,19 +8,19 @@ p {
 
 span.border-red {
   background-color: red;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   border-radius: 10px;
 }
 
 span.border-green {
   background-color: green;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   border-radius: 10px;
 }
 

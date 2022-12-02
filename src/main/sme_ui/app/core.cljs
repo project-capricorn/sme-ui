@@ -71,7 +71,7 @@ if all functions evaluate to true"
 
 (def validators
   "A collection of functions used to validate the predicate"
-  [parse/min-terms? parse/infixed? parse/max-terms? parse/max-ops?])
+  [parse/min-terms? parse/infixed? parse/max-terms? parse/max-ops? parse/min-sub-x?])
 
 (defn disable-eval
   "Returns true if either the chosen set or predicate are not valid"
@@ -102,11 +102,12 @@ the current numeral is beginning a new number and that numeral is conj'd with th
 (defn header [] [:div.jumbotron [:header [:h1 "SME Online"]]])
 
 (defn notes [] [:div.col-sm-6
-                [:p "The Set Builder allows you to build sets by applying "
+                [:p "The SME Set Builder allows you to build sets by applying "
                  [:em "valid"] " predicates to integers."]
                 [:p "The set builder notation "
-                 [:strong "{ x \u2208 S | P(x) } "] "is read formally as "
-                 [:em "The set of all elements x in S such that P(x) is true"] ", where "
+                 [:strong "{ x \u2208 S | P(x) } "] "is read formally as, "
+                 [:em "The set of all elements x in S such that P(x) is true."]]
+                 [:p "Here,  "
                  [:strong \u2208] " denotes "
                  [:em "is an element of, "]
                  [:strong "S"] " represents a set, "
@@ -114,9 +115,11 @@ the current numeral is beginning a new number and that numeral is conj'd with th
                  [:strong " P(x)"] " is a function that evaluates to true or false (a predicate). Finally, "
                  [:strong "|"] "  means "
                  [:em "such that "], "indicating the predicate should evaluate to true given x."]
-                [:p "A valid predicate is one that can be evaluated (computed), although it may be obviously true or false."]
+                [:ul 
+                 [:li "Predicates may consist of two or three terms and one or two operators respectively"]
+                 [:li "Predicates must contain at least one subject"]]
 
-                [:p "Both the chosen set and the predicate will display a green border when valid. If the entire expression is valid the "
+                [:p "Both the chosen set and the predicate will display a green background when valid. If the entire expression is valid the "
                  [:em "Eval "] "button will be enabled to compute the set."]])
 
 (defn keypad []

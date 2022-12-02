@@ -1,5 +1,6 @@
 (ns sme-ui.app.parse
-  (:require [sme-ui.app.sym :as sym]))
+  (:require [sme-ui.app.sym :as sym])
+  (:require [sme-ui.app.util :as util]))
 
 (defn operator? [term] (some #(= % term) (keys sym/bin-op-sym)))
 
@@ -28,3 +29,15 @@
                          (cond (and (= sym-count 3) (= op-count 1)) true
                                (and (= sym-count 5) (= op-count 2)) true
                                :else false)))
+
+(defn min-sub-x? [pred] (>= (get (frequencies pred) \u0078) 1))
+
+(defn function-from [sym-list]
+  "Returns a function built from a list of symbols representing 
+an infixed binary operation."
+  (let [fir (first sym-list)
+        sec (get sym/op-to-func (second sym-list))
+        thi (util/third sym-list)]
+    (if (util/numeric? fir)
+      #(sec (js/parseInt fir) %)
+      #(sec % (js/parseInt thi)))))

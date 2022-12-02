@@ -49,13 +49,3 @@ in order of increasing value."}
 (def nat-numbers
   "A lazy seq representing the natural numbers including 0."
   (iterate inc 0))
-
-(defn function-from [sym-list]
-  "Returns a function built from a list of symbols representing 
-an infixed binary operation."
-  (let [fir (first sym-list)
-        sec (get op-to-func (second sym-list))
-        thi (util/third sym-list)]
-    (if (util/numeric? fir)
-      #(sec (js/parseInt fir) %)
-      #(sec % (js/parseInt thi)))))

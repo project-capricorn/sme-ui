@@ -69,13 +69,9 @@ if all functions evaluate to true"
   "Disables set evaluation given its validity"
   (partial apply-to-set false true))
 
-(def validators
-  "A collection of functions used to validate the predicate"
-  [parse/min-terms? parse/infixed? parse/max-terms? parse/max-ops? parse/min-sub-x?])
-
 (defn disable-eval
   "Returns true if either the chosen set or predicate are not valid"
-  [] (or (disable-set-eval) (apply disable-pred-eval validators)))
+  [] (or (disable-set-eval) (apply disable-pred-eval parse/validators)))
 
 (defn clear-pred-place!
   "Removes the default element from the predicate collection"
@@ -101,7 +97,7 @@ the current numeral is beginning a new number and that numeral is conj'd with th
 
 (defn header [] [:div.jumbotron [:header [:h1 "SME Online"]]])
 
-(defn notes [] [:div.col-sm-6
+(defn notes [] [:div.col-sm-4
                 [:p "The SME Set Builder allows you to build sets by applying "
                  [:em "valid"] " predicates to integers."]
                 [:p "The set builder notation "
@@ -123,7 +119,7 @@ the current numeral is beginning a new number and that numeral is conj'd with th
                  [:em "Eval "] "button will be enabled to compute the set."]])
 
 (defn keypad []
-  [:div
+  [:div.well
    [:h3 "Sets"]
    (component/buttons-from sym/set-sym (fn [val] (reset! a-set val)))
    [:h3 "Binary Operators"]
@@ -146,17 +142,17 @@ the current numeral is beginning a new number and that numeral is conj'd with th
 (defn set-builder [] [:div
                       [:h3 "{ x \u2208 "
                        [(border-set-sym) {:title "Set"} @a-set] " | "
-                       [(apply border-pred validators) {:title "Predicate"}
+                       [(apply border-pred parse/validators) {:title "Predicate"}
                         (string/join " " @predicate)] " }"]])
 
 (defn render []
   (rdom/render [:div
                 [header]
                 [notes]
-                [:div.col-sm-6
-                 [keypad]
-                 [set-builder]
-                 [:h3 @eval-pred]]]
+                [:div.col-sm-3
+                 [keypad]]
+                [:div.col-sm-5
+                 [:div.well [component/slider 1 1000] [set-builder]]]]
                (.getElementById js/document "root")))
 
 (defn ^:export main []

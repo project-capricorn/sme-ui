@@ -1,4 +1,5 @@
-(ns sme-ui.app.component)
+(ns sme-ui.app.component
+  (:require [reagent.core :as r]))
 
 (defn series
   "Produces a placeholder for a series using the given tag, symbol,
@@ -15,3 +16,10 @@ and n number terms"
               (conj acc [:button.pad-keys
                          {:title desc
                           :on-click #(f sym)} sym]))) [:div] mappings))
+
+(defn slider [min max]
+  (let [value (r/atom 0)]
+    (fn []
+      [:input {:type "range" :value @value :min min :max max
+               :style {:width "100%"}
+               :on-change (fn [e] (swap! value #(js/parseInt (.. e -target -value))))}])))

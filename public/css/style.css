@@ -1,3 +1,7 @@
+body {
+    padding: 2%;
+}
+
 header {
   text-align: center;
 }
@@ -7,7 +11,7 @@ p, li {
 }
 
 span.border-red {
-  background-color: red;
+  background-color: rgb(255,0,0,0.8);
   padding-left: 8px;
   padding-right: 8px;
   padding-top: 3px;
@@ -16,11 +20,11 @@ span.border-red {
 }
 
 span.border-green {
-  background-color: green;
+  background-color: rgb(0,128,0,0.8);
   padding-left: 8px;
   padding-right: 8px;
   padding-top: 3px;
-  padding-bottom: px;
+  padding-bottom: 3px;
   border-radius: 10px;
 }
 

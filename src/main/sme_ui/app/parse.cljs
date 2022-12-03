@@ -32,6 +32,10 @@
 
 (defn min-sub-x? [pred] (>= (get (frequencies pred) \u0078) 1))
 
+(def validators
+  "A collection of functions used to validate the predicate"
+  [min-terms? infixed? max-terms? max-ops? min-sub-x?])
+
 (defn function-from [sym-list]
   "Returns a function built from a list of symbols representing 
 an infixed binary operation."
@@ -41,3 +45,5 @@ an infixed binary operation."
     (if (util/numeric? fir)
       #(sec (js/parseInt fir) %)
       #(sec % (js/parseInt thi)))))
+
+(defn set-from [set-sym])

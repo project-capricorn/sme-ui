@@ -6,10 +6,9 @@ in order of increasing value."}
   (:require [sme-ui.app.util :as util]))
 
 (def set-sym
-  "Unicode symbols associated with number sets.
-  In this case zero has been included in the set of natural numbers."
+  "Unicode symbols associated with number sets."
   (sorted-map
-   \u2115 "Natural numbers: {0, 1, 2, 3, ...}"
+   \u2115 "Natural numbers: {1, 2, 3, ...}"
    \u2124 "Integers: {..., -1, 0, 1, ...}"))
 
 (def un-op-sym
@@ -47,5 +46,9 @@ in order of increasing value."}
   (zipmap (keys bin-op-sym) [< = > not= <= >=]))
 
 (def nat-numbers
-  "A lazy seq representing the natural numbers including 0."
-  (iterate inc 0))
+  "A lazy seq representing the natural numbers"
+  (iterate inc 1))
+
+(def neg-ints
+  "A lazy seq representing the negative integers"
+  (iterate dec 0))

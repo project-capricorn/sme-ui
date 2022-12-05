@@ -4,7 +4,9 @@
 
  :dependencies
  [[reagent            "1.0.0"]
-  [binaryage/devtools "1.0.2"]]
+  [binaryage/devtools "1.0.2"]
+  [metosin/reitit "0.5.18"]
+  [metosin/spec-tools "0.10.5"]]
 
  :dev-http
  {3000 "public"}

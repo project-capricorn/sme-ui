@@ -1,9 +1,11 @@
 body {
-    padding: 2%;
+  padding: 1%;
+  font-family: Garamond, serif;
 }
 
 header {
   text-align: center;
+  font-family: 'Times New Roman', serif;
 }
 
 p, li {

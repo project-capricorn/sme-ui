@@ -2,6 +2,7 @@
   (:require
    [reagent.core :as r]
    [sme-ui.app.set-builder :as sb]
+   [sme-ui.app.home :as h]
    [reagent.dom :as rdom]
    [reitit.frontend :as rf]
    [reitit.frontend.easy :as rfe]))
@@ -15,8 +16,6 @@
                   [:ul {:class "nav navbar-nav"}
                    [:li [:a {:href (rfe/href ::home)} "Home"]]
                    [:li [:a {:href (rfe/href ::set-builder)} "Sets"]]]]])
-
-(defn home [] [:h1 "Home"])
 
 (defn set-builder [] [:div
                       [:div.col-sm-4 [sb/notes]]
@@ -34,7 +33,7 @@
 (def routes
   [["/"
     {:name ::home
-     :view home}]
+     :view h/home}]
 
    ["/set-builder"
     {:name ::set-builder

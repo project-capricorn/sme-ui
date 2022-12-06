@@ -9,7 +9,7 @@
 
 (defn header [] [:div.jumbotron [:header [:h1 "Project Capricorn"]]])
 
-(defn navbar [] [:nav {:class "navbar navbar-inverse"}
+(defn navbar [] [:nav {:class "navbar navbar-default"}
                  [:div {:class "container-fluid"}
                   [:div {:class "navbar-header"}
                    [:button {:type "button", :class "navbar-toggle", :data-toggle "collapse", :data-target "#myNavbar"}

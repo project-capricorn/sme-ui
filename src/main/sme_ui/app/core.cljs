@@ -14,7 +14,6 @@
                   [:div.navbar-header
                    [:a.navbar-brand {:href "#"} "Project Capricorn"]]
                   [:ul {:class "nav navbar-nav"}
-                   [:li [:a {:href (rfe/href ::home)} "Home"]]
                    [:li [:a {:href (rfe/href ::set-builder)} "Sets"]]]]])
 
 (defn set-builder [] [:div

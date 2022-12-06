@@ -4,7 +4,7 @@
 
 ## Overview
 
-[SME Online](https://project-capricorn.github.io/) is a nascent ClojureScript / Reagent application for interactive discrete math.
+[Project Capricorn](https://project-capricorn.github.io/) is a nascent ClojureScript / Reagent application for pairing programmers with domain experts.
 
 ## Roadmap
 

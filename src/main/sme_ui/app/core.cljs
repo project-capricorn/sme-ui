@@ -10,11 +10,24 @@
 (defn header [] [:div.jumbotron [:header [:h1 "Project Capricorn"]]])
 
 (defn navbar [] [:nav {:class "navbar navbar-inverse"}
-                 [:div.container-fluid
-                  [:div.navbar-header
-                   [:a.navbar-brand {:href "#"} "Project Capricorn"]]
-                  [:ul {:class "nav navbar-nav"}
-                   [:li [:a {:href (rfe/href ::set-builder)} "Sets"]]]]])
+                 [:div {:class "container-fluid"}
+                  [:div {:class "navbar-header"}
+                   [:button {:type "button", :class "navbar-toggle", :data-toggle "collapse", :data-target "#myNavbar"}
+                    [:span {:class "icon-bar"}]
+                    [:span {:class "icon-bar"}]
+                    [:span {:class "icon-bar"}]]
+                   [:a {:class "navbar-brand", :href "#"} "Project Capricorn"]]
+                  [:div {:class "collapse navbar-collapse", :id "myNavbar"}
+                   [:ul {:class "nav navbar-nav"}
+                    [:li [:a {:href "#"} "Home"]]
+                    [:li [:a {:href "#"} "About"]]
+                    [:li [:a {:href "#"} "Acks"]]
+                    [:li {:class "dropdown"}
+                     [:a {:class "dropdown-toggle", :data-toggle "dropdown", :href "#"} "Math"
+                      [:span {:class "caret"}]]
+                     [:ul {:class "dropdown-menu"}
+                      [:li
+                       [:a {:href (rfe/href ::set-builder)} "Set Builder Notation"]]]]]]]])
 
 (defn set-builder [] [:div
                       [:div.col-sm-4 [sb/notes]]

@@ -4,7 +4,7 @@
             [sme-ui.app.log :as log]
             [sme-ui.app.util :as util]
             [sme-ui.app.parse :as parse]
-            [sme-ui.app.component :as component] 
+            [sme-ui.app.component :as component]
             [reagent.core :as r]))
 
 (def predicate-placeholder
@@ -95,6 +95,8 @@ the current numeral is beginning a new number and that numeral is conj'd with th
 (defn eval-expression []) ;; TODO
 
 (defn notes [] [:div
+                [:h3 {:style {:color "red"}} "In flight; see " [:a {:href "https://github.com/project-capricorn/sme-ui"
+                                                                    :target "_blank"} " roadmap."]]
                 [:p "The SME Set Builder allows you to build sets by applying "
                  [:em "valid"] " predicates to integers."]
                 [:p "The set builder notation "

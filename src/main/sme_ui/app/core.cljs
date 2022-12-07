@@ -3,6 +3,8 @@
    [reagent.core :as r]
    [sme-ui.app.set-builder :as sb]
    [sme-ui.app.home :as h]
+   [sme-ui.app.ack :as ack]
+   [sme-ui.app.about :as a]
    [reagent.dom :as rdom]
    [reitit.frontend :as rf]
    [reitit.frontend.easy :as rfe]))
@@ -20,8 +22,8 @@
                   [:div {:class "collapse navbar-collapse", :id "myNavbar"}
                    [:ul {:class "nav navbar-nav"}
                     [:li [:a {:href "#"} "Home"]]
-                    [:li [:a {:href "#"} "About"]]
-                    [:li [:a {:href "#"} "Acks"]]
+                    [:li [:a {:href (rfe/href ::about)} "About"]]
+                    [:li [:a {:href (rfe/href ::acks)} "Acks"]]
                     [:li {:class "dropdown"}
                      [:a {:class "dropdown-toggle", :data-toggle "dropdown", :href "#"} "Math"
                       [:span {:class "caret"}]]
@@ -49,7 +51,15 @@
 
    ["/set-builder"
     {:name ::set-builder
-     :view set-builder}]])
+     :view set-builder}]
+   
+    ["/about"
+     {:name ::about
+      :view a/about}]
+   
+    ["/acks"
+     {:name ::acks
+      :view ack/acks}]])
 
 (defn init! []
   (rfe/start!

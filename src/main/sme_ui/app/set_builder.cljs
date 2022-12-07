@@ -92,7 +92,7 @@ the current numeral is beginning a new number and that numeral is conj'd with th
             (swap! predicate pop)
             (swap! predicate conj (str num x))))))
 
-(defn eval-expression [])
+(defn eval-expression []) ;; TODO
 
 (defn notes [] [:div
                 [:p "The SME Set Builder allows you to build sets by applying "
@@ -142,4 +142,4 @@ the current numeral is beginning a new number and that numeral is conj'd with th
                        [(apply border-pred parse/validators) {:title "Predicate"}
                         (string/join " " @predicate)] " }"]])
 
-(defn result [] [:div.well [component/slider 1 1000] [set-builder]])
+(defn result [] [:div.well [component/slider 1 1000] [set-builder]]) ;; TODO

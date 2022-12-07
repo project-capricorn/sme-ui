@@ -44,6 +44,10 @@
      (let [view (:view (:data @match))]
        [view @match]))])
 
+(defn footer [] [:footer.footer 
+                 [:div.container
+                  [:p.text-muted "Some stuff"]]])
+
 (def routes
   [["/"
     {:name ::home

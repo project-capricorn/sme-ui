@@ -5,6 +5,7 @@
    [sme-ui.app.home :as h]
    [sme-ui.app.ack :as ack]
    [sme-ui.app.about :as a]
+   [sme-ui.app.acreage :as ac]
    [reagent.dom :as rdom]
    [reitit.frontend :as rf]
    [reitit.frontend.easy :as rfe]))
@@ -25,11 +26,17 @@
                     [:li [:a {:href (rfe/href ::about)} "About"]]
                     [:li [:a {:href (rfe/href ::acks)} "Acks"]]
                     [:li {:class "dropdown"}
+                     [:a {:class "dropdown-toggle", :data-toggle "dropdown", :href "#"} "Agtech"
+                      [:span {:class "caret"}]]
+                     [:ul {:class "dropdown-menu"}
+                      [:li
+                       [:a {:href (rfe/href ::acreage)} "Acreage"]]]]
+                    [:li {:class "dropdown"}
                      [:a {:class "dropdown-toggle", :data-toggle "dropdown", :href "#"} "Math"
                       [:span {:class "caret"}]]
                      [:ul {:class "dropdown-menu"}
                       [:li
-                       [:a {:href (rfe/href ::set-builder)} "Set Builder Notation"]]]]]]]])
+                       [:a {:href (rfe/href ::set-builder)} "Set Builder"]]]]]]]])
 
 (defn set-builder [] [:div
                       [:div.col-sm-4 [sb/notes]]
@@ -44,7 +51,7 @@
      (let [view (:view (:data @match))]
        [view @match]))])
 
-(defn footer [] [:footer.footer 
+(defn footer [] [:footer.footer
                  [:div.container
                   [:p.text-muted "Some stuff"]]])
 
@@ -56,14 +63,18 @@
    ["/set-builder"
     {:name ::set-builder
      :view set-builder}]
-   
-    ["/about"
-     {:name ::about
-      :view a/about}]
-   
-    ["/acks"
-     {:name ::acks
-      :view ack/acks}]])
+
+   ["/acreage"
+    {:name ::acreage
+     :view ac/test-polygon}]
+
+   ["/about"
+    {:name ::about
+     :view a/about}]
+
+   ["/acks"
+    {:name ::acks
+     :view ack/acks}]])
 
 (defn init! []
   (rfe/start!
@@ -74,7 +85,6 @@
                 [navbar]
                 [current-page]]
                (.getElementById js/document "root")))
-
 
 (defn ^:export main []
   (init!))

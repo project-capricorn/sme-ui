@@ -15,24 +15,22 @@
 (defn navbar [] [:nav {:class "navbar navbar-default"}
                  [:div {:class "container-fluid"}
                   [:div {:class "navbar-header"}
-                   [:button {:type "button", :class "navbar-toggle", :data-toggle "collapse", :data-target "#myNavbar"}
-                    [:span {:class "icon-bar"}]
-                    [:span {:class "icon-bar"}]
-                    [:span {:class "icon-bar"}]]
-                   [:a {:class "navbar-brand", :href "#"} "Project Capricorn"]]
-                  [:div {:class "collapse navbar-collapse", :id "myNavbar"}
+                   [:button {:type "button" :class "navbar-toggle", :data-toggle "collapse", :data-target "#myNavbar"}
+                    (for [_ (range 3)] [:span {:class "icon-bar"}])]
+                   [:a {:class "navbar-brand" :href "#"} "Project Capricorn"]]
+                  [:div {:class "collapse navbar-collapse" :id "myNavbar"}
                    [:ul {:class "nav navbar-nav"}
                     [:li [:a {:href "#"} "Home"]]
                     [:li [:a {:href (rfe/href ::about)} "About"]]
                     [:li [:a {:href (rfe/href ::acks)} "Acks"]]
                     [:li {:class "dropdown"}
-                     [:a {:class "dropdown-toggle", :data-toggle "dropdown", :href "#"} "Agtech"
+                     [:a {:class "dropdown-toggle" :data-toggle "dropdown" :href "#"} "Agtech"
                       [:span {:class "caret"}]]
                      [:ul {:class "dropdown-menu"}
                       [:li
                        [:a {:href (rfe/href ::acreage)} "Acreage"]]]]
                     [:li {:class "dropdown"}
-                     [:a {:class "dropdown-toggle", :data-toggle "dropdown", :href "#"} "Math"
+                     [:a {:class "dropdown-toggle" :data-toggle "dropdown" :href "#"} "Math"
                       [:span {:class "caret"}]]
                      [:ul {:class "dropdown-menu"}
                       [:li

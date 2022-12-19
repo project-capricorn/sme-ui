@@ -29,7 +29,6 @@
                                  :on-change #(let [val (-> % .-target .-value)] (reset! inputs (input-from val)))}]
                         @inputs]
                        [:div.col-sm-10
-                        [:svg {:height "2500" :width "2500"
-                               :style {:padding "2%"}}
+                        [:svg {:height "2500" :width "2500"}
                          [:polygon {:points (stringify-points @polygon)
                                     :fill "green" :stroke "black"}]]]])

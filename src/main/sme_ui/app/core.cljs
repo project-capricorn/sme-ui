@@ -5,6 +5,7 @@
    [sme-ui.app.home :as h]
    [sme-ui.app.ack :as ack]
    [sme-ui.app.about :as a]
+   [sme-ui.app.contact :as c]
    [sme-ui.app.acreage :as ac]
    [reagent.dom :as rdom]
    [reitit.frontend :as rf]
@@ -23,6 +24,7 @@
                     [:li [:a {:href "#"} "Home"]]
                     [:li [:a {:href (rfe/href ::about)} "About"]]
                     [:li [:a {:href (rfe/href ::acks)} "Acks"]]
+                    [:li [:a {:href (rfe/href ::contact)} "Contact"]]
                     [:li {:class "dropdown"}
                      [:a {:class "dropdown-toggle" :data-toggle "dropdown" :href "#"} "Agtech"
                       [:span {:class "caret"}]]
@@ -72,7 +74,11 @@
 
    ["/acks"
     {:name ::acks
-     :view ack/acks}]])
+     :view ack/acks}]
+
+   ["/contact"
+    {:name ::contact
+     :view  c/contact}]])
 
 (defn init! []
   (rfe/start!

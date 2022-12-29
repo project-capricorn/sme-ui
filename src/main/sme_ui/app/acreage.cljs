@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]
             [reagent.core :as r]))
 
-(def polygon-placeholder [[0 0] [0 250] [250 250] [250 0]])
+(def polygon-placeholder [[100 350] [500 50] [400 300] [550 350] [350 500]])
 
 (def polygon (r/atom polygon-placeholder))
 
@@ -10,7 +10,7 @@
 
 (def points (r/atom points-placeholder))
 
-(def inputs-placeholder (for [_ (range points-placeholder)] [:input.text]))
+(def inputs-placeholder [:div (for [_ (range points-placeholder)] [:input.text])])
 
 (def inputs (r/atom inputs-placeholder))
 
@@ -26,9 +26,23 @@
                         [:input {:type "number"
                                  :min "3"
                                  :max "50"
-                                 :on-change #(let [val (-> % .-target .-value)] (reset! inputs (input-from val)))}]
-                        @inputs]
+                                 :on-change #(let [val (-> % .-target .-value)]
+                                               (reset! inputs (input-from val)))}] @inputs]
                        [:div.col-sm-10
                         [:svg {:height "2500" :width "2500"}
                          [:polygon {:points (stringify-points @polygon)
                                     :fill "green" :stroke "black"}]]]])
+
+(defn shoelace [points]
+  (let [f (first points) l (last points)]
+    (loop [acc1 0 acc2 0 rem points]
+      (if (nil? (second rem))
+        (/ (Math/abs (- (+ acc1 (* (first l) (last f)))
+                        (+ acc2 (* (last l) (first f))))) 2)
+        (recur (+ acc1 (* (first (first rem))
+                          (second (second rem))))
+               (+ acc2 (* (first (second rem))
+                          (second (first rem))))
+               (rest rem))))))
+
+(defn normalize [points] nil)

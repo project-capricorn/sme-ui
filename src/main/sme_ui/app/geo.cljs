@@ -2,21 +2,14 @@
   (:require  [sme-ui.app.util :as util]))
 
 (defn to-radians [degrees]
+  "Convert from degrees to radians"
   (* degrees (/ Math/PI 180)))
 
-(defn law-of-cosines [a b y]
-  (Math/sqrt (-
-              (+ (* a a) (* b b))
-              (* 2 a b (Math/cos (to-radians y))))))
-
-(defn get-quadrant [deg]
-  (inc (quot (mod deg 360) 90)))
-
-(defn get-coords [mag deg]
-  (let [quad (get-quadrant deg)
-        angle (mod deg 90)
-        x (* mag (Math/sin (to-radians angle)))]
-    [x mag]))
+(defn to-cartesian [rho theta]
+  "Convert from polar to cartesian coordinates"
+  (let [x (* rho (Math/cos (to-radians theta)))
+        y (* rho (Math/sin (to-radians theta)))]
+    [x y]))
 
 (defn lace
   "Determines the area of a simple polygon via the Shoelace Formula. 

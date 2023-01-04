@@ -43,6 +43,15 @@
                (* b b))
               (* 2 a b (Math/cos (to-radians y))))))
 
+(defn get-quadrant [deg]
+  
+  (cond
+    (and (> deg 0) (< deg 90)) 1
+    (and (> deg 90) (< deg 180)) 2
+    (and (> deg 180) (< deg 270)) 3
+    (and (> deg 270) (< deg 360)) 4
+    :else (get-quadrant (mod deg 360))))
+
 (defn lace
   "Determines the area of a simple polygon via the Shoelace Formula. 
 Takes a vector of x, y coordinate vectors given in counter clockwise order"

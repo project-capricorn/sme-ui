@@ -6,3 +6,9 @@
 
 (defn third [x] (second (next x)))
 
+(defn between? [val start end]
+  "True if val is in the non-inclusive range of start to end"
+  (if (<= start end)
+    (and (> val start) (< val end))
+    (and (< val start) (> val end))))
+

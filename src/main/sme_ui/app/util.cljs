@@ -12,3 +12,7 @@
     (and (> val start) (< val end))
     (and (< val start) (> val end))))
 
+(defn appr [delta expected actual]
+  "Tests equality within a givin tolerance"
+  (< (Math/abs (- expected actual)) delta))
+

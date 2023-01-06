@@ -22,7 +22,7 @@
   "Returns an angle in radians"
   [point]
   (let [[x y] point
-        angle (Math/atan2 x y)]
+        angle (Math/atan2 y x)]
     (if (<= angle 0)
       (+ (* 2 Math/PI) angle)
       angle)))
@@ -33,7 +33,7 @@
   (let [[x y] point]
     (Math/sqrt (+ (* x x) (* y y)))))
 
-(defn transfrom
+(defn transform
   "Shift a vector of points by x-shift, y-shift"
   [points x-shift y-shift]
   (map (fn [point] (let [[x y] point] [(+ x x-shift) (+ y y-shift)])) points))
@@ -59,12 +59,10 @@
       :else false)))
 
 (defn sort-anti-clock [points]
-  (let [n (count points)
-        [x-mean y-mean] (get-centroid n points) 
+  (let [[x-mean y-mean] (get-centroid points) 
         trans (transform points (- x-mean) (- y-mean))]
     trans))
 
-(sort-anti-clock [[-2 2] [-2 1] [-1 0] [-3 1]])
 
 (defn lace
   "Determines the area of a simple polygon via the Shoelace Formula. 

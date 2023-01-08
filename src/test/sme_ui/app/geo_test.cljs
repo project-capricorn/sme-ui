@@ -10,7 +10,7 @@
   (is (roughly 0 (geo/to-radians 0)))
   (is (roughly 0.523 (geo/to-radians 30)))
   (is (roughly 2.094 (geo/to-radians 120))
-  (is (roughly 4.712 (geo/to-radians 270)))))
+      (is (roughly 4.712 (geo/to-radians 270)))))
 
 (deftest to-degrees
   (is (roughly 0 (geo/to-degrees 0)))
@@ -24,12 +24,32 @@
   (is (roughly -1.811 (first (geo/to-cartesian 7 105))))
   (is (roughly 6.761 (second (geo/to-cartesian 7 105)))))
 
-(deftest get-angle 
+(deftest get-angle
   (is (roughly 53.130 (geo/to-degrees (geo/get-angle [3 4]))))
   (is (roughly 126.87 (geo/to-degrees (geo/get-angle [-3 4]))))
   (is (roughly 233.13 (geo/to-degrees (geo/get-angle [-3 -4]))))
-  (is (roughly 306.869 (geo/to-degrees (geo/get-angle [3 -4]))))
-)
+  (is (roughly 306.869 (geo/to-degrees (geo/get-angle [3 -4])))))
+
+(deftest get-distance
+  (is (= 5 (geo/get-distance [3 4])))
+  (is (= 5 (geo/get-distance [-3 4])))
+  (is (= 5 (geo/get-distance [-3 -4])))
+  (is (= 5 (geo/get-distance [3 -4]))))
+
+(deftest transform
+  (is (= [[0 3] [0 0] [3 0] [3 3]] 
+         (geo/transform [[-4 -1] [-4 -4] [-1 -4] [-1 -1]] 4 4))))
+
+(deftest get-centroid
+  (is (= [0 0] (geo/get-centroid [[3 4] [-3 4] [-3 -4] [3 -4]])))
+  (is (= [2.5 -0.25] (geo/get-centroid [[1 4] [9 3] [-3 -4] [3 -4]]))))
+
+(deftest compare-clockwise
+  (not (geo/compare-clockwise [3 4] [-3 4])))
+
+(deftest sort-clockwise
+  (is (= [[1 6] [3 1] [7 2] [4 4] [8 5]] 
+         (geo/sort-clockwise [[7 2] [1 6] [3 1] [8 5] [4 4]]))))
 
 (deftest test-lace
   (let [points [[1 6] [3 1] [7 2] [4 4] [8 5]]]

@@ -58,10 +58,11 @@
       (and (= a1 a2) (< d1 d2)) true
       :else false)))
 
-(defn sort-anti-clock [points]
+(defn sort-clockwise [points]
   (let [[x-mean y-mean] (get-centroid points) 
-        trans (transform points (- x-mean) (- y-mean))]
-    trans))
+        trans (transform points (- x-mean) (- y-mean))
+        sorted (sort compare-clockwise trans)]
+    (transform sorted x-mean y-mean)))
 
 
 (defn lace

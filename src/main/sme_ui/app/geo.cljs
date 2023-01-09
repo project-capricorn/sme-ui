@@ -13,10 +13,13 @@
 
 (defn to-cartesian
   "Converts from polar to cartesian coordinates"
-  [r theta]
-  (let [x (* r (Math/cos (to-radians theta)))
-        y (* r (Math/sin (to-radians theta)))]
-    [x y]))
+  ([point] (to-cartesian (first point) (second point)))
+  ([r theta]
+   (let [x (* r (Math/cos (to-radians theta)))
+         y (* r (Math/sin (to-radians theta)))]
+     [x y])))
+
+(to-cartesian [2 30])
 
 (defn get-angle
   "Returns an angle in radians"
@@ -26,6 +29,14 @@
     (if (<= angle 0)
       (+ (* 2 Math/PI) angle)
       angle)))
+
+(defn get-coords
+  ""
+  [points]
+  (let [fpt (to-cartesian (first points))]
+    (reduce (fn [acc val] (conj acc (into [] (map + (to-cartesian val) (last acc)))))
+            [fpt]
+            (rest points))))
 
 (defn get-distance
   "Returns the distance of a point from the origin"
@@ -59,11 +70,10 @@
       :else false)))
 
 (defn sort-clockwise [points]
-  (let [[x-mean y-mean] (get-centroid points) 
+  (let [[x-mean y-mean] (get-centroid points)
         trans (transform points (- x-mean) (- y-mean))
         sorted (sort compare-clockwise trans)]
-    (transform sorted x-mean y-mean)))
-
+    (into [] (transform sorted x-mean y-mean))))
 
 (defn lace
   "Determines the area of a simple polygon via the Shoelace Formula. 
@@ -79,4 +89,8 @@ Takes a vector of x, y coordinate vectors given in counter clockwise order"
                (+ acc2 (* (first (second rem))
                           (second (first rem))))
                (rest rem))))))
+
+(defn get-poly-area
+  ""
+  [points] nil)
 

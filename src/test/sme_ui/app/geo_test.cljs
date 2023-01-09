@@ -30,6 +30,16 @@
   (is (roughly 233.13 (geo/to-degrees (geo/get-angle [-3 -4]))))
   (is (roughly 306.869 (geo/to-degrees (geo/get-angle [3 -4])))))
 
+(deftest get-coords
+  (let [[[x1 y1] [x2 y2] [x3 y3]] 
+        (geo/get-coords [[2 30] [3 45] [4 120]])]
+    (is (roughly 1.732 x1))
+    (is (roughly 1.000 y1))
+    (is (roughly 3.853 x2))
+    (is (roughly 3.121 y2))
+    (is (roughly 1.853 x3))
+    (is (roughly 6.585 y3))))
+
 (deftest get-distance
   (is (= 5 (geo/get-distance [3 4])))
   (is (= 5 (geo/get-distance [-3 4])))
@@ -48,9 +58,9 @@
   (not (geo/compare-clockwise [3 4] [-3 4])))
 
 (deftest sort-clockwise
-  (is (= [[1 6] [3 1] [7 2] [4 4] [8 5]] 
+  (is (= [[7 2] [3 1] [1 6] [4 4] [8 5]] 
          (geo/sort-clockwise [[7 2] [1 6] [3 1] [8 5] [4 4]]))))
 
 (deftest test-lace
-  (let [points [[1 6] [3 1] [7 2] [4 4] [8 5]]]
+  (let [points [[7 2] [3 1] [1 6] [4 4] [8 5]]]
     (is (= 16.5 (geo/lace points)))))

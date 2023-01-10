@@ -1,89 +1,93 @@
 (ns sme-ui.app.geo
   (:require  [sme-ui.app.util :as util]))
 
-(defn to-radians
+(defn to-rad
   "Converts from degrees to radians"
-  [degrees]
-  (* degrees (/ Math/PI 180)))
+  [deg]
+  (* deg (/ Math/PI 180)))
 
-(defn to-degrees
+(defn to-deg
   "Converts from radians to degrees"
-  [radians]
-  (* radians (/ 180 Math/PI)))
+  [rad]
+  (* rad (/ 180 Math/PI)))
 
-(defn to-cartesian
+(defn normalize-declination [decl]
+  nil)
+
+(defn to-cart
   "Converts from polar to cartesian coordinates"
-  ([point] (to-cartesian (first point) (second point)))
+  ([pt] (to-cart (first pt) (second pt)))
   ([r theta]
-   (let [x (* r (Math/cos (to-radians theta)))
-         y (* r (Math/sin (to-radians theta)))]
+   (let [x (* r (Math/cos (to-rad theta)))
+         y (* r (Math/sin (to-rad theta)))]
      [x y])))
-
-(to-cartesian [2 30])
 
 (defn get-angle
   "Returns an angle in radians"
-  [point]
-  (let [[x y] point
+  [pt]
+  (let [[x y] pt
         angle (Math/atan2 y x)]
     (if (<= angle 0)
       (+ (* 2 Math/PI) angle)
       angle)))
 
 (defn get-coords
-  ""
-  [points]
-  (let [fpt (to-cartesian (first points))]
-    (reduce (fn [acc val] (conj acc (into [] (map + (to-cartesian val) (last acc)))))
-            [fpt]
-            (rest points))))
+  "Takes a collection of vectors (magnitude angle pairs). Returns a collection of x, y coords
+  representing the succesive sums of those vectors"
+  [pts]
+  (let [pt (to-cart (first pts))]
+    (reduce (fn [acc val] (conj acc (into [] (map + (to-cart val) (last acc)))))
+            [pt]
+            (rest pts))))
 
 (defn get-distance
   "Returns the distance of a point from the origin"
-  [point]
-  (let [[x y] point]
+  [pt]
+  (let [[x y] pt]
     (Math/sqrt (+ (* x x) (* y y)))))
 
 (defn transform
   "Shift a vector of points by x-shift, y-shift"
-  [points x-shift y-shift]
-  (map (fn [point] (let [[x y] point] [(+ x x-shift) (+ y y-shift)])) points))
+  [pts x-shift y-shift]
+  (map (fn [pt] (let [[x y] pt] [(+ x x-shift) (+ y y-shift)])) pts))
 
 (defn get-centroid
   "Returns the geometric center of points"
-  [points]
-  (let [num-points (count points)
-        x-mean (/ (apply + (map first points)) num-points)
-        y-mean (/ (apply + (map second points)) num-points)]
+  [pts]
+  (let [num-pts (count pts)
+        x-mean (/ (apply + (map first pts)) num-pts)
+        y-mean (/ (apply + (map second pts)) num-pts)]
     [x-mean y-mean]))
 
-(defn compare-clockwise
-  ""
+(defn comp-anti-clock
+  "True if point `p1` produces an angle or distance less than point `p2` "
   [p1 p2]
   (let [a1 (get-angle p1)
         a2 (get-angle p2)
         d1 (get-distance p1)
         d2 (get-distance p2)]
     (cond
-      (> a1 a2) true
+      (< a1 a2) true
       (and (= a1 a2) (< d1 d2)) true
       :else false)))
 
-(defn sort-clockwise [points]
-  (let [[x-mean y-mean] (get-centroid points)
-        trans (transform points (- x-mean) (- y-mean))
-        sorted (sort compare-clockwise trans)]
+(defn sort-anti-clock
+  "Sorts points in anti(counter)-clockwise order via comparator `co`"
+  [co pts]
+  (let [[x-mean y-mean] (get-centroid pts)
+        trans (transform pts (- x-mean) (- y-mean))
+        sorted (sort co trans)]
     (into [] (transform sorted x-mean y-mean))))
 
 (defn lace
-  "Determines the area of a simple polygon via the Shoelace Formula. 
-Takes a vector of x, y coordinate vectors given in counter clockwise order"
-  [points]
-  (let [f (first points) l (last points)]
-    (loop [acc1 0 acc2 0 rem points]
+  "Apples the Shoelace formula (Gauss's area formula) to `pts` 
+  representing a simple polygon"
+  [pts]
+  (let [fpt (first pts) lpt (last pts)]
+    (loop [acc1 0 acc2 0 rem pts]
       (if (nil? (second rem))
-        (/ (Math/abs (- (+ acc1 (* (first l) (last f)))
-                        (+ acc2 (* (last l) (first f))))) 2)
+        (/ (Math/abs (- (+ acc1 (* (first lpt) (last fpt)))
+                        (+ acc2 (* (last lpt) (first fpt))))) 2)
         (recur (+ acc1 (* (first (first rem))
                           (second (second rem))))
                (+ acc2 (* (first (second rem))
@@ -91,6 +95,7 @@ Takes a vector of x, y coordinate vectors given in counter clockwise order"
                (rest rem))))))
 
 (defn get-poly-area
-  ""
-  [points] nil)
+  "Gets the area of `pts` representing a simple polygon"
+  [pts]
+  (lace (sort-anti-clock comp-anti-clock pts)))
 

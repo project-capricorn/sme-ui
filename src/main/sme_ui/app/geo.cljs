@@ -11,6 +11,14 @@
   [rad]
   (* rad (/ 180 Math/PI)))
 
+(defn law-of-cosines [a b y]
+  "Applies law of cosines given angle `y` and adjacent sides `a` and `b`"
+  (Math/sqrt (-
+              (+
+               (* a a)
+               (* b b))
+              (* 2 a b (Math/cos (to-rad y))))))
+
 (defn to-cart
   "Converts from polar to cartesian coordinates"
   ([pt] (to-cart (first pt) (second pt)))

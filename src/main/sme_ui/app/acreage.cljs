@@ -2,7 +2,7 @@
   (:require [clojure.string :as string]
             [reagent.core :as r]))
 
-(def polygon-placeholder [[100 600] [300 100] [700 200] [400 400] [800 500]])
+(def polygon-placeholder [[0 0] [100 0] [100 100] [0 100]])
 
 (def polygon (r/atom polygon-placeholder))
 

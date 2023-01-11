@@ -11,9 +11,6 @@
   [rad]
   (* rad (/ 180 Math/PI)))
 
-(defn normalize-declination [decl]
-  nil)
-
 (defn to-cart
   "Converts from polar to cartesian coordinates"
   ([pt] (to-cart (first pt) (second pt)))
@@ -45,6 +42,17 @@
   [pt]
   (let [[x y] pt]
     (Math/sqrt (+ (* x x) (* y y)))))
+
+(defn get-shift-pt
+  "Returns the minimum distance x and y must shift to transform points to the first quadrant"
+  [pts]
+  (let [x-min (apply min (map first pts))
+        y-min (apply min (map second pts))]
+    (cond
+      (and (neg? x-min) (neg? y-min)) [x-min y-min]
+      (neg? x-min) [x-min 0]
+      (neg? y-min) [0 y-min]
+      :else [0 0])))
 
 (defn transform
   "Shift a vector of points by x-shift, y-shift"
@@ -95,7 +103,9 @@
                (rest rem))))))
 
 (defn get-poly-area
-  "Gets the area of `pts` representing a simple polygon"
-  [pts]
-  (lace (sort-anti-clock comp-anti-clock pts)))
+  "Gets the area of vectors `vcs` forming a simple polygon"
+  [vcs]
+  (let [coords (get-coords vcs)
+        sorted (sort-anti-clock comp-anti-clock coords)]
+    (lace sorted)))
 

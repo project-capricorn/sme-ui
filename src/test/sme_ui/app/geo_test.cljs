@@ -46,6 +46,10 @@
   (is (= 5 (geo/get-distance [-3 -4])))
   (is (= 5 (geo/get-distance [3 -4]))))
 
+(deftest get-shift-pt
+  (is (= [0 0] (geo/get-shift-pt [[0 0] [0 1] [1 1] [1 0]])))
+  (is (= [-1 -1] (geo/get-shift-pt [[1 1] [1 -1] [-1 -1] [-1 1]]))))
+
 (deftest transform
   (is (= [[0 3] [0 0] [3 0] [3 3]] 
          (geo/transform [[-4 -1] [-4 -4] [-1 -4] [-1 -1]] 4 4))))
@@ -63,5 +67,9 @@
           geo/comp-anti-clock [[7 2] [1 6] [3 1] [8 5] [4 4]]))))
 
 (deftest test-lace
-  (let [pts [[7 2] [3 1] [1 6] [4 4] [8 5]]]
-    (is (= 16.5 (geo/lace pts)))))
+  (is (= 16.5 (geo/lace [[7 2] [3 1] [1 6] [4 4] [8 5]])))
+  (is (= 4 (geo/lace [[2 0] [2 2] [0 2] [0 0]]))))
+
+(deftest get-poly-area
+  (is (roughly 2220 (geo/get-poly-area [[37 30] [60 300] [37 210] [60 120]]))))
+

@@ -10,17 +10,22 @@
 
 (def points (r/atom points-placeholder))
 
-(def inputs-placeholder [:div (for [_ (range points-placeholder)] [:input.text])])
+(def inputs-placeholder [:div (for [i (range 1 points-placeholder)] 
+                                [:div.well 
+                                 [:label {:for (str "d" i)} (str "Distance " i)] 
+                                 [:input {:type "number" :id (str "d" i)}]
+                                 [:label {:for (str "a" i)} (str "Angle " i)]
+                                 [:input {:type "number" :id (str "a" i)}]])])
 
 (def inputs (r/atom inputs-placeholder))
 
 (defn stringify-points [poly]
   (apply str (reduce #(conj %1 (str (string/join "," %2) " ")) [] poly)))
 
-(defn input-from [points] (for [_ (range points)] [:input.text]))
+(defn input-from [points] (for [_ (range points)] [:input {:type "number"}]))
 
 (defn test-polygon [] [:div
-                       [:div.col-sm-2
+                       [:div.col-sm-3
                         [:h3 {:style {:color "red"}} "In flight"]
                         [:label {:for "quantity"} "Points in polygon: "]
                         [:input {:type "number"
@@ -28,7 +33,7 @@
                                  :max "50"
                                  :on-change #(let [val (-> % .-target .-value)]
                                                (reset! inputs (input-from val)))}] @inputs]
-                       [:div.col-sm-10
+                       [:div.col-sm-9
                         [:svg {:height "2500" :width "2500"}
                          [:polygon {:points (stringify-points @polygon)
                                     :fill "green" :stroke "black"}]]]])

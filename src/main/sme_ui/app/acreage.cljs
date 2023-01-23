@@ -6,33 +6,23 @@
 
 (def polygon (r/atom polygon-placeholder))
 
-(def points-placeholder 4)
+(defn input-point [i] [:div [:div.well
+                             [:label {:for (str "d" i)} (str "Distance " i)]
+                             [:input {:type "number" :id (str "d" i)}]
+                             [:label {:for (str "a" i)} (str "Angle " i)]
+                             [:input {:type "number" :id (str "a" i)}]]])
 
-(def points (r/atom points-placeholder))
-
-(def inputs-placeholder [:div (for [i (range 1 points-placeholder)] 
-                                [:div.well 
-                                 [:label {:for (str "d" i)} (str "Distance " i)] 
-                                 [:input {:type "number" :id (str "d" i)}]
-                                 [:label {:for (str "a" i)} (str "Angle " i)]
-                                 [:input {:type "number" :id (str "a" i)}]])])
-
-(def inputs (r/atom inputs-placeholder))
+(def inputs (r/atom []))
 
 (defn stringify-points [poly]
   (apply str (reduce #(conj %1 (str (string/join "," %2) " ")) [] poly)))
 
-(defn input-from [points] (for [_ (range points)] [:input {:type "number"}]))
-
 (defn test-polygon [] [:div
+                       [:div
+                        [:h1 {:style {:color "red"}} "In flight"]
+                        [:h3 "Two Dimensional Area Survey"]]
                        [:div.col-sm-3
-                        [:h3 {:style {:color "red"}} "In flight"]
-                        [:label {:for "quantity"} "Points in polygon: "]
-                        [:input {:type "number"
-                                 :min "3"
-                                 :max "50"
-                                 :on-change #(let [val (-> % .-target .-value)]
-                                               (reset! inputs (input-from val)))}] @inputs]
+                        [:button {:title "Add Point"} "Add Point"]]
                        [:div.col-sm-9
                         [:svg {:height "2500" :width "2500"}
                          [:polygon {:points (stringify-points @polygon)

@@ -1,12 +1,12 @@
 (ns sme-ui.app.core
   (:require
    [reagent.core :as r]
-   [sme-ui.app.set-builder :as sb]
-   [sme-ui.app.home :as h]
+   [sme-ui.app.set-builder :as set-builder]
+   [sme-ui.app.home :as home]
    [sme-ui.app.ack :as ack]
-   [sme-ui.app.about :as a]
-   [sme-ui.app.contact :as c]
-   [sme-ui.app.acreage :as ac]
+   [sme-ui.app.about :as about]
+   [sme-ui.app.contact :as contact]
+   [sme-ui.app.surveyor :as surveyor]
    [reagent.dom :as rdom]
    [reitit.frontend :as rf]
    [reitit.frontend.easy :as rfe]))
@@ -30,7 +30,7 @@
                       [:span {:class "caret"}]]
                      [:ul {:class "dropdown-menu"}
                       [:li
-                       [:a {:href (rfe/href ::acreage)} "Acreage"]]]]
+                       [:a {:href (rfe/href ::acreage)} "Surveyor"]]]]
                     [:li {:class "dropdown"}
                      [:a {:class "dropdown-toggle" :data-toggle "dropdown" :href "#"} "Math"
                       [:span {:class "caret"}]]
@@ -39,9 +39,9 @@
                        [:a {:href (rfe/href ::set-builder)} "Set Builder"]]]]]]]])
 
 (defn set-builder [] [:div
-                      [:div.col-sm-4 [sb/notes]]
-                      [:div.col-sm-3 [sb/keypad]]
-                      [:div.col-sm-5 [sb/result]]])
+                      [:div.col-sm-4 [set-builder/notes]]
+                      [:div.col-sm-3 [set-builder/keypad]]
+                      [:div.col-sm-5 [set-builder/result]]])
 
 (defonce match (r/atom nil))
 
@@ -58,7 +58,7 @@
 (def routes
   [["/"
     {:name ::home
-     :view h/home}]
+     :view home/home}]
 
    ["/set-builder"
     {:name ::set-builder
@@ -66,11 +66,11 @@
 
    ["/acreage"
     {:name ::acreage
-     :view ac/test-polygon}]
+     :view surveyor/survey}]
 
    ["/about"
     {:name ::about
-     :view a/about}]
+     :view about/about}]
 
    ["/acks"
     {:name ::acks
@@ -78,7 +78,7 @@
 
    ["/contact"
     {:name ::contact
-     :view  c/contact}]])
+     :view  contact/contact}]])
 
 (defn init! []
   (rfe/start!

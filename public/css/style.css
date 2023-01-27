@@ -53,11 +53,23 @@ button.pad-keys {
   font-family: 'Hind Madurai', sans-serif;
 }
 
+button.btn-primary, button.btn-warning, button.btn-danger {
+  margin: 5px;
+  padding: 5px;
+  font-size: 17px;
+  font-family: 'Hind Madurai', sans-serif;
+  border-radius: 10px;
+}
+
 input {
   width: 100%;
   padding: 6px 10px;
-  margin: 4px 0;
+  margin: 4px;
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
+}
+
+label {
+  margin: 10px;
 }

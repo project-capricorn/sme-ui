@@ -34,14 +34,19 @@ straight, non-intersecting line segments or 'sides' that are joined pairwise to 
                   [:h3 "Instructions"]
                   [:img {:src "compass.jpg" :style {:box-shadow  "10px 10px 5px lightblue" :margin-bottom "2%"}}]
                   [:p "Beginning at any location on the perimiter of the area you wish to survey, 
-hold the compass flat and point the Direction of Travel Arrow towards your target.
-Next, rotate the Compass Housing so that the red end of the magnetic needle sits inside the
-the Orienteering Arrow, as seen above. Record the degree measured in the center of the Direction of Travel Arrow. 
+hold the compass flat and point the Direction of Travel Arrow (1) towards your target.
+Next, rotate the Compass Housing (2) so that the red end of the magnetic needle (3) sits inside the
+the Orienteering Arrow (4). Record the degree measured in the center of the Direction of Travel Arrow. The example image shows a reading of roughly 320\u00B0. 
 This degree represents your direction."]
                   [:p "Using your measuring device, measure the distance between your current location 
 and your target in a straight line. This is your distance. Record it next to your direction. From this point, 
-repeat the process until you have a list of distance and direction measurements for each point on the perimiter 
-of your site. The last point surveyed will automatically by connected to the first point."]]
+repeat the process until you have a list of distance and direction measurements for each point on the perimiter of your site. E.g., the following readings should survey a square of 2,220 units."]
+                  [:ul
+                   [:li "Direction: 30, Distance: 37"]
+                   [:li "Direction: 300, Distance: 60 "]
+                   [:li "Direction: 210, Distance: 37"]
+                   [:li "Direction: 120, Distance: 60"]]
+                  [:p "The last point surveyed will automatically by connected to the first point."]]
                  [:div.col-sm-3
                   [:h3 {:style {:color "red"}} "In flight"]
                   [:button {:title "Add Point"} "Add Point"]]

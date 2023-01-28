@@ -19,6 +19,9 @@
 (defn stringify-points [poly]
   (apply str (reduce #(conj %1 (str (string/join "," %2) " ")) [] poly)))
 
+(defn parse-points [input-pts]
+  (let [[_ [_ & j]] input-pts] j) nil)
+
 (defn survey [] [:div
                  [:div
                   [:h1 "Area Surveyor"]
@@ -76,6 +79,3 @@
                   [:svg {:height "2500" :width "2500"}
                    [:polygon {:points (stringify-points @polygon)
                               :fill "green" :stroke "black"}]]]])
-
-
-

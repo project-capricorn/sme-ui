@@ -17,6 +17,9 @@ and n number terms"
                          {:title desc
                           :on-click #(f sym)} sym]))) [:div] mappings))
 
+(defn parse-int [i] 
+  (js/parseInt (.. i -target -value)))
+
 (defn slider [min max]
   (let [value (r/atom 0)]
     (fn []

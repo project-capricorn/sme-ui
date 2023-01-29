@@ -1,26 +1,35 @@
 (ns sme-ui.app.surveyor
   (:require [clojure.string :as string]
-            [reagent.core :as r]))
+            [reagent.core :as r]
+            [sme-ui.app.component :as component]))
 
 (def polygon-placeholder [[0 0] [100 0] [100 100] [0 100]])
 
 (def polygon (r/atom polygon-placeholder))
 
-(defn input-point [i] [:div [:div.well
-                             [:label {:for (str "a" i)} (str "Direction " i)]
-                             [:input {:type "number" :id (str "a" i)}]
-                             [:label {:for (str "d" i)} (str "Distance " i)]
-                             [:input {:type "number" :id (str "d" i)}]]])
+(defn input-component [i] [:div
+                           [:div.well
+                            [:label {:for (str "a" i)} (str "Direction " i)]
+                            [:input {:type "number" :id (str "a" i)}]
+                            [:label {:for (str "d" i)} (str "Distance " i)]
+                            [:input {:type "number" :id (str "d" i)}]]])
 
 (def point-num (r/atom 1))
 
-(def inputs (r/atom [:div (input-point @point-num)]))
+(def inputs (r/atom [:div (input-component @point-num)]))
 
 (defn stringify-points [poly]
   (apply str (reduce #(conj %1 (str (string/join "," %2) " ")) [] poly)))
 
-(defn parse-points [input-pts]
-  (let [[_ [_ & j]] input-pts] j) nil)
+(defn parse-inputs [input-components]
+  (let [[_ [_ & i]] input-components
+        pts (filter #(= :input (first %)) i)]
+    (loop [acc [] rem pts]
+      (let [[dir dis] rem]
+        (if (nil? dis) acc
+            (recur (conj acc [(component/parse-int dir)
+                              (component/parse-int dis)])
+                   (next (rest rem))))))))
 
 (defn survey [] [:div
                  [:div
@@ -61,7 +70,7 @@
                   [:h3 {:style {:color "red"}} "In flight"]
                   [:button.btn-primary {:title "Add Point"
                                         :on-click #(swap! inputs conj
-                                                          (input-point (swap! point-num inc)))}
+                                                          (input-component (swap! point-num inc)))}
                    "Add Point"]
                   [:button.btn-warning {:title "Remove Point"
                                         :on-click #(when (> @point-num 1)

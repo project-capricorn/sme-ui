@@ -29,7 +29,7 @@
 (defn stringify-points [poly]
   (apply str (reduce #(conj %1 (str (string/join "," %2) " ")) [] poly)))
 
-;; TODO :: Extract input values
+;; TODO :: Properly collect atoms
 (defn parse-inputs [input-components]
   (let [[_ [_ & i]] input-components
         pts (filter #(= :input (first %)) i)]
